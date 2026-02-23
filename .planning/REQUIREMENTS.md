@@ -95,31 +95,31 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| RECIPE-01 | — | Pending |
-| RECIPE-02 | — | Pending |
-| RECIPE-03 | — | Pending |
-| RECIPE-04 | — | Pending |
-| RECIPE-05 | — | Pending |
-| RECIPE-06 | — | Pending |
-| SEARCH-01 | — | Pending |
-| SEARCH-02 | — | Pending |
-| SHOP-01 | — | Pending |
-| SHOP-02 | — | Pending |
-| SHOP-03 | — | Pending |
-| SHOP-04 | — | Pending |
-| SHOP-05 | — | Pending |
-| SHOP-06 | — | Pending |
-| DATA-01 | — | Pending |
-| DATA-02 | — | Pending |
-| ARCH-01 | — | Pending |
-| ARCH-02 | — | Pending |
-| ARCH-03 | — | Pending |
+| RECIPE-01 | 2 | Pending |
+| RECIPE-02 | 2 | Pending |
+| RECIPE-03 | 2 | Pending |
+| RECIPE-04 | 2 | Pending |
+| RECIPE-05 | 2 | Pending |
+| RECIPE-06 | 2 | Pending |
+| SEARCH-01 | 3 | Pending |
+| SEARCH-02 | 3 | Pending |
+| SHOP-01 | 4 | Pending |
+| SHOP-02 | 4 | Pending |
+| SHOP-03 | 4 | Pending |
+| SHOP-04 | 4 | Pending |
+| SHOP-05 | 4 | Pending |
+| SHOP-06 | 4 | Pending |
+| DATA-01 | 2 | Pending |
+| DATA-02 | 5 | Pending |
+| ARCH-01 | 1 | Pending |
+| ARCH-02 | 1 | Pending |
+| ARCH-03 | 1 | Pending |
 
 **Coverage:**
 - v1 requirements: 19 total
-- Mapped to phases: 0
-- Unmapped: 19 ⚠️
+- Mapped to phases: 19
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-23*
-*Last updated: 2026-02-23 after initial definition*
+*Last updated: 2026-02-23 after roadmap creation*
