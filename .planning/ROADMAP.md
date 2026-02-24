@@ -18,7 +18,7 @@ schema changes.
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation and Data Layer** - SQLite with WAL mode,
+- [x] **Phase 1: Foundation and Data Layer** - SQLite with WAL mode,
   sqlite-vec extension, Alembic migrations, and core SQLModel schemas
 - [ ] **Phase 2: Recipe Import and CRUD** - URL import with preview-before-save,
   manual entry, rating/notes, duplicate detection, keyword search, and data
@@ -48,9 +48,9 @@ future phases to build without schema rework.
      and initializes importer registry
 **Plans**: 3 plans
 
-- [ ] 01-01-PLAN.md - Project setup and configuration
-- [ ] 01-02-PLAN.md - Database layer and SQLModel schemas
-- [ ] 01-03-PLAN.md - FastAPI application with lifespan
+- [x] 01-01-PLAN.md - Project setup and configuration
+- [x] 01-02-PLAN.md - Database layer and SQLModel schemas
+- [x] 01-03-PLAN.md - FastAPI application with lifespan
 
 ### Phase 2: Recipe Import and CRUD
 **Goal**: Users can import recipes from URLs (with preview before save),
@@ -130,7 +130,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation and Data Layer | 0/3 | Ready | - |
+| 1. Foundation and Data Layer | 3/3 | Complete | 2026-02-24 |
 | 2. Recipe Import and CRUD | 0/TBD | Not started | - |
 | 3. Semantic Search | 0/TBD | Not started | - |
 | 4. Shopping List | 0/TBD | Not started | - |
