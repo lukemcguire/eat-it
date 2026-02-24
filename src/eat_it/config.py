@@ -1,4 +1,9 @@
-"""Application configuration using pydantic-settings."""
+"""Application configuration via Pydantic Settings.
+
+Environment variables:
+    EAT_IT_DATABASE_URL: SQLite database URL (default: sqlite:///./data/eat-it.db)
+    EAT_IT_EMBEDDING_MODEL: Sentence transformer model name (default: all-MiniLM-L6-v2)
+"""
 
 from functools import lru_cache
 
@@ -9,18 +14,22 @@ class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
 
     model_config = SettingsConfigDict(
-        env_prefix="EAT_IT_",
         env_file=".env",
+        env_prefix="EAT_IT_",
         env_file_encoding="utf-8",
         extra="ignore",
     )
 
     database_url: str = "sqlite:///./data/eat-it.db"
     embedding_model: str = "all-MiniLM-L6-v2"
-    debug: bool = False
 
 
 @lru_cache
 def get_settings() -> Settings:
     """Get cached settings instance."""
     return Settings()
+
+
+# Global settings instance for convenience
+settings = Settings()
+
