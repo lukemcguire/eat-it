@@ -56,7 +56,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [ ] **ARCH-01**: Recipe importers follow a provider/strategy pattern so new
   parsers can be added without touching core logic
-- [ ] **ARCH-02**: A plugin directory is scanned at startup to register
+- [x] **ARCH-02**: A plugin directory is scanned at startup to register
   importers, exporters, and enhancers
 - [ ] **ARCH-03**: Recipe and shopping list schemas include a versioned
   `metadata` field to support future plugin data without schema hacks
@@ -112,7 +112,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DATA-01 | 2 | Pending |
 | DATA-02 | 5 | Pending |
 | ARCH-01 | 1 | Pending |
-| ARCH-02 | 1 | Pending |
+| ARCH-02 | 1 | Complete |
 | ARCH-03 | 1 | Pending |
 
 **Coverage:**
