@@ -6,7 +6,19 @@ readme = "README.md"
 requires-python = ">=3.13"
 license = { text = "MIT" }
 authors = [{ name = "Luke McGuire", email = "luke.mcguire@gmail.com" }]
-dependencies = []
+dependencies = [
+    "sqlmodel>=0.0.16",
+    "alembic>=1.13",
+    "fastapi>=0.115",
+    "uvicorn>=0.30",
+    "aiosqlite>=0.20",
+    "sqlite-vec>=0.1.0",
+    "sentence-transformers>=3.0",
+    "pydantic-settings>=2.0",
+]
+
+[project.entry-points."eat_it.importers"]
+# Built-in importers will be added in Phase 2
 
 [project.urls]
 Homepage = "https://github.com/lukemcguire/eat-it"
@@ -18,8 +30,7 @@ build-backend = "hatchling.build"
 
 # ─── Hatch Build Configuration ──────────────────────────
 [tool.hatch.build.targets.wheel]
-# Include templates and commands directories in wheel for importlib.resources access
-artifacts = []
+packages = ["src/eat_it"]
 
 # ─── Ruff ─────────────────────────────────────────────
 [tool.ruff]
