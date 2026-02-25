@@ -19,7 +19,13 @@ from eat_it.models import (  # noqa: F401
 
 
 def _set_test_pragma(dbapi_connection, connection_record) -> None:  # noqa: ARG001
-    """Set SQLite PRAGMA settings on test connection."""
+    """Set SQLite PRAGMA settings and load sqlite-vec on test connection."""
+    # Load sqlite-vec extension for vector search support
+    dbapi_connection.enable_load_extension(True)
+    import sqlite_vec
+
+    sqlite_vec.load(dbapi_connection)
+
     cursor = dbapi_connection.cursor()
     cursor.execute("PRAGMA foreign_keys=ON")
     cursor.close()
