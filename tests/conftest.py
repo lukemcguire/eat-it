@@ -63,6 +63,27 @@ def test_session(test_engine) -> Generator[Session, None, None]:
         yield session
 
 
+@pytest.fixture(autouse=True)
+def clean_database(test_engine):
+    """Clear all tables before each test for isolation.
+
+    This fixture runs automatically before each test to ensure
+    database isolation when using StaticPool with in-memory database.
+    """
+    from sqlmodel import delete
+
+    with Session(test_engine) as session:
+        # Delete in order of foreign key dependencies
+        session.exec(delete(Ingredient))  # type: ignore
+        session.exec(delete(IngredientGroup))  # type: ignore
+        session.exec(delete(ShoppingListItem))  # type: ignore
+        session.exec(delete(ShoppingList))  # type: ignore
+        session.exec(delete(Recipe))  # type: ignore
+        session.exec(delete(Settings))  # type: ignore
+        session.commit()
+    yield
+
+
 @asynccontextmanager
 async def noop_lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """No-op lifespan for testing that skips model loading."""
