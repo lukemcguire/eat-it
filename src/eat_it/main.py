@@ -70,7 +70,7 @@ app = FastAPI(
 
 # Include routers
 app.include_router(health_router)
-app.include_router(recipes_router, prefix="/recipes", tags=["recipes"])
+app.include_router(recipes_router, prefix="/recipes")
 
 # Expose session dependency for routes
 __all__ = ["app", "get_session"]
