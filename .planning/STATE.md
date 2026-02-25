@@ -7,37 +7,37 @@ See: .planning/PROJECT.md (updated 2026-02-23)
 **Core value:** All your recipes and shopping lists live on your own hardware,
 searchable in plain English, with no ads, no accounts required, and no data
 leaving your network.
-**Current focus:** Phase 1 - Foundation and Data Layer
+**Current focus:** Phase 2 - Recipe Import and CRUD
 
 ## Current Position
 
-Phase: 1 of 5 (Foundation and Data Layer)
-Plan: 4 of 4 in current phase
-Status: Completed 01-04 sqlite-vec Extension Loading
-Last activity: 2026-02-25 — Completed 01-04 sqlite-vec Extension Loading
+Phase: 2 of 5 (Recipe Import and CRUD)
+Plan: 1 of 5 in current phase
+Status: Completed 02-01 Recipe Model Extensions
+Last activity: 2026-02-25 — Completed 02-01 Recipe Model Extensions
 
-Progress: [####-] 100%
+Progress: [----] 20%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: 24 min
-- Total execution time: 1.58 hours
+- Total plans completed: 5
+- Average duration: 20 min
+- Total execution time: 1.67 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Foundation | 4 | 95min | 24min |
-| 2. Recipe Import | 0 | TBD | - |
+| 2. Recipe Import | 1 | 5min | 5min |
 | 3. Semantic Search | 0 | TBD | - |
 | 4. Shopping List | 0 | TBD | - |
 | 5. Frontend/Deploy | 0 | TBD | - |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (33min), 01-02 (52min), 01-03 (8min), 01-04 (2min)
-- Trend: Gap closure plans very fast with clear scope
+- Last 5 plans: 01-02 (52min), 01-03 (8min), 01-04 (2min), 02-01 (5min)
+- Trend: Phase 2 foundation plan completed quickly
 
 *Updated after each plan completion*
 
@@ -48,6 +48,8 @@ Progress: [####-] 100%
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
+- [02-01]: Add rating (1-5 int) and notes (text) as nullable fields to Recipe
+- [02-01]: Create separate RecipeRatingUpdate and RecipeNotesUpdate schemas per CONTEXT.md
 - [01-04]: Import sqlite_vec inside function to keep dependency localized
 - [01-04]: Use try/finally for raw_connection cleanup (context manager not
   supported)
@@ -85,5 +87,5 @@ From research SUMMARY.md - Phase 3 and Phase 4 flags:
 ## Session Continuity
 
 Last session: 2026-02-25
-Stopped at: Completed 01-04 sqlite-vec Extension Loading
-Resume file: .planning/phases/02-recipe-import/02-01-PLAN.md
+Stopped at: Completed 02-01 Recipe Model Extensions
+Resume file: .planning/phases/02-recipe-import-and-crud/02-02-PLAN.md

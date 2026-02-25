@@ -72,7 +72,7 @@ enter recipes manually, and perform full CRUD operations with export.
   6. User can export all recipes as JSON or CSV from the application
 **Plans**: 5 plans
 
-- [ ] 02-01-PLAN.md - Recipe model extensions (rating/notes, Pydantic schemas)
+- [x] 02-01-PLAN.md - Recipe model extensions (rating/notes, Pydantic schemas)
 - [ ] 02-02-PLAN.md - Recipe CRUD API (list, get, create, update, delete)
 - [ ] 02-03-PLAN.md - Recipe import/parse (URL parsing, duplicate detection)
 - [ ] 02-04-PLAN.md - Recipe annotations (rating/notes endpoints)
@@ -138,7 +138,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation and Data Layer | 4/4 | Complete | 2026-02-25 |
-| 2. Recipe Import and CRUD | 0/5 | Not started | - |
+| 2. Recipe Import and CRUD | 1/5 | In Progress | - |
 | 3. Semantic Search | 0/TBD | Not started | - |
 | 4. Shopping List | 0/TBD | Not started | - |
 | 5. Frontend and Deployment | 0/TBD | Not started | - |
