@@ -9,6 +9,7 @@ from fastapi import FastAPI
 from eat_it.config import get_settings
 from eat_it.database import get_session, init_db
 from eat_it.routers.health import router as health_router
+from eat_it.routers.recipes import router as recipes_router
 from eat_it.services.importer_registry import ImporterRegistry
 
 logger = logging.getLogger(__name__)
@@ -69,6 +70,7 @@ app = FastAPI(
 
 # Include routers
 app.include_router(health_router)
+app.include_router(recipes_router, prefix="/recipes", tags=["recipes"])
 
 # Expose session dependency for routes
 __all__ = ["app", "get_session"]

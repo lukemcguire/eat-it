@@ -19,15 +19,9 @@ from sqlmodel import Session, col, select
 
 from eat_it.database import get_session
 from eat_it.models.recipe import Recipe
-from eat_it.schemas.recipe import (
-    RecipeCreate,
-    RecipeNotesUpdate,
-    RecipePublic,
-    RecipeRatingUpdate,
-    RecipeUpdate,
-)
+from eat_it.schemas.recipe import RecipeCreate, RecipePublic, RecipeUpdate
 
-router = APIRouter(prefix="/recipes", tags=["recipes"])
+router = APIRouter(tags=["recipes"])
 
 
 @router.post(
@@ -187,79 +181,3 @@ def delete_recipe(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Recipe not found")
     session.delete(recipe)
     session.commit()
-
-
-@router.patch(
-    "/{recipe_id}/rating",
-    response_model=RecipePublic,
-    summary="Update recipe rating",
-)
-def update_recipe_rating(
-    *,
-    session: Session = Depends(get_session),
-    recipe_id: int,
-    rating_update: RecipeRatingUpdate,
-) -> Recipe:
-    """Update a recipe's rating.
-
-    Per CONTEXT.md: Dedicated endpoint for rating updates only.
-    Rating must be between 1 and 5, or null to clear.
-
-    Args:
-        session: Database session from dependency injection.
-        recipe_id: The ID of the recipe to update.
-        rating_update: Rating update payload.
-
-    Returns:
-        The updated recipe.
-
-    Raises:
-        HTTPException: 404 if recipe not found.
-
-    """
-    recipe = session.get(Recipe, recipe_id)
-    if not recipe:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Recipe not found")
-    recipe.rating = rating_update.rating
-    session.add(recipe)
-    session.commit()
-    session.refresh(recipe)
-    return recipe
-
-
-@router.patch(
-    "/{recipe_id}/notes",
-    response_model=RecipePublic,
-    summary="Update recipe notes",
-)
-def update_recipe_notes(
-    *,
-    session: Session = Depends(get_session),
-    recipe_id: int,
-    notes_update: RecipeNotesUpdate,
-) -> Recipe:
-    """Update a recipe's notes.
-
-    Per CONTEXT.md: Dedicated endpoint for notes updates only.
-    Notes can be any text up to 10000 characters, or null to clear.
-
-    Args:
-        session: Database session from dependency injection.
-        recipe_id: The ID of the recipe to update.
-        notes_update: Notes update payload.
-
-    Returns:
-        The updated recipe.
-
-    Raises:
-        HTTPException: 404 if recipe not found.
-
-    """
-    recipe = session.get(Recipe, recipe_id)
-    if not recipe:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Recipe not found")
-    recipe.notes = notes_update.notes
-    session.add(recipe)
-    session.commit()
-    session.refresh(recipe)
-    return recipe
