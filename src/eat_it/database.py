@@ -21,7 +21,13 @@ def _get_database_path() -> Path:
 
 
 def _set_pragma(dbapi_connection, connection_record) -> None:  # noqa: ARG001
-    """Set SQLite PRAGMA settings on connection."""
+    """Set SQLite PRAGMA settings and load sqlite-vec extension."""
+    # Load sqlite-vec extension for vector search support
+    dbapi_connection.enable_load_extension(True)
+    import sqlite_vec
+
+    sqlite_vec.load(dbapi_connection)
+
     cursor = dbapi_connection.cursor()
     cursor.execute("PRAGMA journal_mode=WAL")
     cursor.execute("PRAGMA synchronous=NORMAL")
