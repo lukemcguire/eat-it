@@ -9,12 +9,14 @@ authors = [{ name = "Luke McGuire", email = "luke.mcguire@gmail.com" }]
 dependencies = [
     "sqlmodel>=0.0.16",
     "alembic>=1.13",
-    "fastapi>=0.115",
+    "fastapi[standard]>=0.115",
     "uvicorn>=0.30",
     "aiosqlite>=0.20",
     "sqlite-vec>=0.1.0",
     "sentence-transformers>=3.0",
     "pydantic-settings>=2.0",
+    "recipe-scrapers>=15.11.0",
+    "httpx>=0.28.1",
 ]
 
 [project.entry-points."eat_it.importers"]
