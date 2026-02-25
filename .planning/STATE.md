@@ -12,32 +12,32 @@ leaving your network.
 ## Current Position
 
 Phase: 2 of 5 (Recipe Import and CRUD)
-Plan: 1 of 5 in current phase
-Status: Completed 02-01 Recipe Model Extensions
-Last activity: 2026-02-25 — Completed 02-01 Recipe Model Extensions
+Plan: 3 of 5 in current phase
+Status: Completed 02-03 URL Recipe Parsing
+Last activity: 2026-02-25 — Completed 02-03 URL Recipe Parsing
 
-Progress: [----] 20%
+Progress: [------] 60%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
-- Average duration: 20 min
-- Total execution time: 1.67 hours
+- Total plans completed: 7
+- Average duration: 17 min
+- Total execution time: 2.00 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Foundation | 4 | 95min | 24min |
-| 2. Recipe Import | 1 | 5min | 5min |
+| 2. Recipe Import | 3 | 25min | 8min |
 | 3. Semantic Search | 0 | TBD | - |
 | 4. Shopping List | 0 | TBD | - |
 | 5. Frontend/Deploy | 0 | TBD | - |
 
 **Recent Trend:**
-- Last 5 plans: 01-02 (52min), 01-03 (8min), 01-04 (2min), 02-01 (5min)
-- Trend: Phase 2 foundation plan completed quickly
+- Last 5 plans: 01-04 (2min), 02-01 (5min), 02-03 (10min)
+- Trend: Phase 2 plans progressing steadily
 
 *Updated after each plan completion*
 
@@ -48,6 +48,9 @@ Progress: [----] 20%
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
+- [02-03]: Use recipe-scrapers wild mode (supported_only=False) for any website support
+- [02-03]: Check duplicates at parse time, not save time, for early user feedback
+- [02-03]: Add from_attributes=True to RecipePublic for SQLModel validation
 - [02-01]: Add rating (1-5 int) and notes (text) as nullable fields to Recipe
 - [02-01]: Create separate RecipeRatingUpdate and RecipeNotesUpdate schemas per CONTEXT.md
 - [01-04]: Import sqlite_vec inside function to keep dependency localized
@@ -87,5 +90,5 @@ From research SUMMARY.md - Phase 3 and Phase 4 flags:
 ## Session Continuity
 
 Last session: 2026-02-25
-Stopped at: Completed 02-01 Recipe Model Extensions
-Resume file: .planning/phases/02-recipe-import-and-crud/02-02-PLAN.md
+Stopped at: Completed 02-03 URL Recipe Parsing
+Resume file: .planning/phases/02-recipe-import-and-crud/02-04-PLAN.md
