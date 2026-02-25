@@ -52,6 +52,7 @@ Recent decisions affecting current work:
 - [02-03]: Use recipe-scrapers wild mode (supported_only=False) for any website support
 - [02-03]: Check duplicates at parse time, not save time, for early user feedback
 - [02-03]: Add from_attributes=True to RecipePublic for SQLModel validation
+- [02-04]: Dedicated annotation endpoints for rating/notes following RESTful PATCH semantics
 - [02-01]: Add rating (1-5 int) and notes (text) as nullable fields to Recipe
 - [02-01]: Create separate RecipeRatingUpdate and RecipeNotesUpdate schemas per CONTEXT.md
 - [01-04]: Import sqlite_vec inside function to keep dependency localized
@@ -94,5 +95,5 @@ From research SUMMARY.md - Phase 3 and Phase 4 flags:
 ## Session Continuity
 
 Last session: 2026-02-25
-Stopped at: Completed 02-03 URL Recipe Parsing
-Resume file: .planning/phases/02-recipe-import-and-crud/02-04-PLAN.md
+Stopped at: Completed 02-04 Recipe Annotation Endpoints
+Resume file: .planning/phases/02-recipe-import-and-crud/02-05-PLAN.md

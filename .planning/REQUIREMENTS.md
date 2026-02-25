@@ -15,7 +15,7 @@ Requirements for initial release. Each maps to roadmap phases.
   open-source library, previewed, then explicitly saved)
 - [x] **RECIPE-02**: User can enter or edit a recipe manually when URL parsing
   fails or is unavailable
-- [ ] **RECIPE-03**: User can add private notes and a rating to any recipe
+- [x] **RECIPE-03**: User can add private notes and a rating to any recipe
 - [x] **RECIPE-04**: User receives a clear error message and manual-entry
   fallback when URL parsing fails
 - [x] **RECIPE-05**: User is warned when importing a duplicate URL (detection
@@ -97,7 +97,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | RECIPE-01 | 2 | Complete |
 | RECIPE-02 | 2 | Complete |
-| RECIPE-03 | 2 | Pending |
+| RECIPE-03 | 2 | Complete |
 | RECIPE-04 | 2 | Complete |
 | RECIPE-05 | 2 | Complete |
 | RECIPE-06 | 2 | Complete |
