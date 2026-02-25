@@ -3,6 +3,7 @@
 Provides RESTful endpoints for recipe management:
 - POST /recipes - Create a new recipe
 - GET /recipes - List recipes with pagination and search
+- GET /recipes/export - Export all recipes as JSON or CSV
 - GET /recipes/parse - Parse a recipe URL
 - GET /recipes/{recipe_id} - Get a single recipe
 - PATCH /recipes/{recipe_id} - Update a recipe (partial)
@@ -13,9 +14,13 @@ Note: Rating and notes updates are handled by separate endpoints
 decision "Separate annotation endpoints".
 """
 
+import csv
+import io
+import json
 from typing import Any, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from sqlmodel import Session, col, select
 
@@ -122,6 +127,93 @@ async def parse_recipe_url(
         )
 
     return response
+
+
+# ─── Export Endpoint ──────────────────────────────────────────────────────
+
+
+@router.get(
+    "/export",
+    summary="Export all recipes",
+)
+def export_recipes(
+    format: str = Query(..., pattern="^(json|csv)$", description="Export format"),
+    session: Session = Depends(get_session),
+) -> StreamingResponse:
+    """Export all recipes in JSON or CSV format.
+
+    Downloads all recipes with all fields. Use for backup or migration.
+
+    Args:
+        format: Export format, either 'json' or 'csv'.
+        session: Database session from dependency injection.
+
+    Returns:
+        StreamingResponse with file download:
+        - JSON: Array of recipe objects
+        - CSV: Header row + one row per recipe
+
+    Note:
+        - CSV escapes newlines in instructions as \\n
+        - CSV joins tags with pipe character |
+        - All recipe fields are included
+    """
+    recipes = session.exec(select(Recipe)).all()
+
+    if format == "json":
+        def generate_json():
+            data = [recipe.model_dump() for recipe in recipes]
+            yield json.dumps(data, indent=2, default=str)
+
+        return StreamingResponse(
+            generate_json(),
+            media_type="application/json",
+            headers={"Content-Disposition": "attachment; filename=recipes.json"},
+        )
+
+    else:  # format == "csv"
+        def generate_csv():
+            output = io.StringIO()
+            writer = csv.writer(output)
+
+            # Header row
+            writer.writerow([
+                "id", "title", "description", "instructions",
+                "prep_time", "cook_time", "servings", "source_url",
+                "image_url", "tags", "rating", "notes",
+                "created_at", "updated_at",
+            ])
+            yield output.getvalue()
+            output.seek(0)
+            output.truncate(0)
+
+            # Data rows
+            for recipe in recipes:
+                writer.writerow([
+                    recipe.id,
+                    recipe.title,
+                    recipe.description or "",
+                    recipe.instructions.replace("\n", "\\n"),
+                    recipe.prep_time or "",
+                    recipe.cook_time or "",
+                    recipe.servings or "",
+                    recipe.source_url or "",
+                    recipe.image_url or "",
+                    "|".join(recipe.tags or []),
+                    recipe.rating or "",
+                    recipe.notes or "",
+                    recipe.created_at.isoformat() if recipe.created_at else "",
+                    recipe.updated_at.isoformat() if recipe.updated_at else "",
+                ])
+                yield output.getvalue()
+                output.seek(0)
+                output.truncate(0)
+
+        return StreamingResponse(
+            generate_csv(),
+            media_type="text/csv",
+            headers={"Content-Disposition": "attachment; filename=recipes.csv"},
+        )
 
 
 # ─── CRUD Endpoints ──────────────────────────────────────────────────────
