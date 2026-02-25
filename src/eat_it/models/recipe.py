@@ -74,6 +74,8 @@ class Recipe(SQLModel, table=True):
         source_url: Original recipe URL.
         image_url: Recipe image URL.
         tags: List of tags for categorization.
+        rating: User rating (1-5 stars, nullable).
+        notes: Private freeform notes (nullable).
         metadata_: Versioned metadata for plugin extensibility.
         created_at: Creation timestamp.
         updated_at: Last update timestamp.
@@ -96,6 +98,10 @@ class Recipe(SQLModel, table=True):
     source_url: Optional[str] = None
     image_url: Optional[str] = None
     tags: list[str] = Field(default_factory=list, sa_column=Column(JSON))
+
+    # User annotations
+    rating: Optional[int] = Field(default=None, ge=1, le=5)  # 1-5 stars
+    notes: Optional[str] = None  # Private freeform notes
 
     # Versioned metadata for plugin extensibility (ARCH-03)
     # Structure: {"version": 1, "data": {...plugin-specific data...}}
