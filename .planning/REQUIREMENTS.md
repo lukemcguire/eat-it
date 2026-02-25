@@ -13,7 +13,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **RECIPE-01**: User can import a recipe by pasting a URL (parsed via
   open-source library, previewed, then explicitly saved)
-- [ ] **RECIPE-02**: User can enter or edit a recipe manually when URL parsing
+- [x] **RECIPE-02**: User can enter or edit a recipe manually when URL parsing
   fails or is unavailable
 - [ ] **RECIPE-03**: User can add private notes and a rating to any recipe
 - [x] **RECIPE-04**: User receives a clear error message and manual-entry
@@ -96,7 +96,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | RECIPE-01 | 2 | Complete |
-| RECIPE-02 | 2 | Pending |
+| RECIPE-02 | 2 | Complete |
 | RECIPE-03 | 2 | Pending |
 | RECIPE-04 | 2 | Complete |
 | RECIPE-05 | 2 | Complete |

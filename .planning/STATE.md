@@ -12,34 +12,35 @@ leaving your network.
 ## Current Position
 
 Phase: 2 of 5 (Recipe Import and CRUD)
-Plan: 3 of 5 in current phase
-Status: Completed 02-03 URL Recipe Parsing
-Last activity: 2026-02-25 — Completed 02-03 URL Recipe Parsing
+Plan: 4 of 5 in current phase
+Status: Completed 02-04 Recipe Annotation Endpoints
+Last activity: 2026-02-25 — Completed 02-04 Recipe Annotation Endpoints
 
-Progress: [------] 60%
+Progress: [------] 80%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
+- Total plans completed: 8
 - Average duration: 17 min
-- Total execution time: 2.00 hours
+- Total execution time: 2.20 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Foundation | 4 | 95min | 24min |
-| 2. Recipe Import | 3 | 25min | 8min |
+| 2. Recipe Import | 4 | 37min | 9min |
 | 3. Semantic Search | 0 | TBD | - |
 | 4. Shopping List | 0 | TBD | - |
 | 5. Frontend/Deploy | 0 | TBD | - |
 
 **Recent Trend:**
-- Last 5 plans: 01-04 (2min), 02-01 (5min), 02-03 (10min)
+- Last 5 plans: 02-01 (5min), 02-02 (5min), 02-03 (10min), 02-04 (12min)
 - Trend: Phase 2 plans progressing steadily
 
 *Updated after each plan completion*
+| Phase 02 P02 | 12 | 3 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -71,6 +72,9 @@ Recent decisions affecting current work:
   for coherent data management
 - [Roadmap]: Phase 5 depends on both Phase 3 and Phase 4 (frontend
   integrates all features)
+- [Phase 02]: Prefix defined in include_router only, not in APIRouter
+- [Phase 02]: Use StaticPool for test database to handle thread pool
+- [Phase 02]: No-op lifespan for tests to avoid loading embedding model
 
 ### Pending Todos
 
