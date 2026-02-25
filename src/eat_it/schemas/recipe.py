@@ -9,7 +9,7 @@ Follows CONTEXT.md constraints:
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class RecipeBase(BaseModel):
@@ -78,6 +78,8 @@ class RecipePublic(RecipeBase):
     Includes all fields from RecipeBase plus id, user annotations,
     and timestamps.
     """
+
+    model_config = ConfigDict(from_attributes=True)
 
     id: int
     rating: Optional[int] = Field(None, ge=1, le=5)

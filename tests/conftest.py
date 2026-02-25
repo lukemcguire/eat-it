@@ -1,10 +1,13 @@
 """Pytest configuration and fixtures for testing."""
 
-from collections.abc import Generator
+from collections.abc import AsyncGenerator, Generator
+from contextlib import asynccontextmanager
 
 import pytest
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from sqlalchemy import event
+from sqlalchemy.pool import StaticPool
 from sqlmodel import Session, SQLModel, create_engine
 
 # Import models to ensure they're registered with SQLModel.metadata
@@ -33,8 +36,16 @@ def _set_test_pragma(dbapi_connection, connection_record) -> None:  # noqa: ARG0
 
 @pytest.fixture
 def test_engine():
-    """Create in-memory SQLite engine for testing."""
-    engine = create_engine("sqlite:///:memory:")
+    """Create in-memory SQLite engine for testing.
+
+    Uses StaticPool to reuse the same connection, which is needed for
+    FastAPI TestClient running in a thread pool with in-memory SQLite.
+    """
+    engine = create_engine(
+        "sqlite:///:memory:",
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
+    )
 
     # Apply PRAGMA settings on connect
     event.listen(engine, "connect", _set_test_pragma)
@@ -52,22 +63,41 @@ def test_session(test_engine) -> Generator[Session, None, None]:
         yield session
 
 
+@asynccontextmanager
+async def noop_lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+    """No-op lifespan for testing that skips model loading."""
+    yield
+
+
 @pytest.fixture
-def client(test_session: Session) -> Generator[TestClient, None, None]:
+def client(test_engine) -> Generator[TestClient, None, None]:
     """Create a TestClient with overridden session dependency.
 
-    Note: This requires the app to have a get_session dependency.
-    For now, this fixture provides the test_session for manual override.
+    Uses a no-op lifespan to avoid loading the embedding model during tests.
+    Uses the test_engine with StaticPool for thread-safe in-memory SQLite.
     """
-    from eat_it.main import app
     from eat_it.database import get_session
+    from eat_it.routers.health import router as health_router
+    from eat_it.routers.recipes import router as recipes_router
+
+    # Create a test app without the heavy lifespan
+    test_app = FastAPI(
+        title="Eat It Test",
+        version="0.1.0",
+        lifespan=noop_lifespan,
+    )
+
+    # Include the same routers
+    test_app.include_router(health_router)
+    test_app.include_router(recipes_router, prefix="/recipes", tags=["recipes"])
 
     def override_get_session():
-        yield test_session
+        with Session(test_engine) as session:
+            yield session
 
-    app.dependency_overrides[get_session] = override_get_session
+    test_app.dependency_overrides[get_session] = override_get_session
 
-    with TestClient(app) as test_client:
+    with TestClient(test_app) as test_client:
         yield test_client
 
-    app.dependency_overrides.clear()
+    test_app.dependency_overrides.clear()
