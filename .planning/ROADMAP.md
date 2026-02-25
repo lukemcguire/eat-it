@@ -46,11 +46,12 @@ future phases to build without schema rework.
   4. Settings table exists with embedding model name/version tracking
   5. FastAPI app starts with lifespan context that loads embedding model
      and initializes importer registry
-**Plans**: 3 plans
+**Plans**: 4 plans
 
 - [x] 01-01-PLAN.md - Project setup and configuration
 - [x] 01-02-PLAN.md - Database layer and SQLModel schemas
 - [x] 01-03-PLAN.md - FastAPI application with lifespan
+- [x] 01-04-PLAN.md - sqlite-vec extension loading (gap closure)
 
 ### Phase 2: Recipe Import and CRUD
 **Goal**: Users can import recipes from URLs (with preview before save),
@@ -130,7 +131,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation and Data Layer | 3/3 | Complete | 2026-02-24 |
+| 1. Foundation and Data Layer | 4/4 | Complete | 2026-02-25 |
 | 2. Recipe Import and CRUD | 0/TBD | Not started | - |
 | 3. Semantic Search | 0/TBD | Not started | - |
 | 4. Shopping List | 0/TBD | Not started | - |
