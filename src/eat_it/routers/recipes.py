@@ -3,6 +3,7 @@
 Provides RESTful endpoints for recipe management:
 - POST /recipes - Create a new recipe
 - GET /recipes - List recipes with pagination and search
+- GET /recipes/parse - Parse a recipe URL
 - GET /recipes/{recipe_id} - Get a single recipe
 - PATCH /recipes/{recipe_id} - Update a recipe (partial)
 - DELETE /recipes/{recipe_id} - Delete a recipe
@@ -12,16 +13,112 @@ Note: Rating and notes updates are handled by separate endpoints
 decision "Separate annotation endpoints".
 """
 
-from typing import Optional
+from typing import Any, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
+from pydantic import BaseModel
 from sqlmodel import Session, col, select
 
 from eat_it.database import get_session
 from eat_it.models.recipe import Recipe
 from eat_it.schemas.recipe import RecipeCreate, RecipePublic, RecipeUpdate
+from eat_it.services.recipe_parser import ParseErrorCode, ParseResult, RecipeParser
 
 router = APIRouter(tags=["recipes"])
+
+
+# ─── Parse Endpoint Response Models ─────────────────────────────────────
+
+
+class ParseErrorData(BaseModel):
+    """Error data returned when parsing fails."""
+
+    code: str
+    message: str
+    suggested_action: str
+
+
+class ParseDuplicateWarning(BaseModel):
+    """Warning data when URL already exists in database."""
+
+    existing_recipe: RecipePublic
+
+
+class ParseResponse(BaseModel):
+    """Response model for /parse endpoint."""
+
+    success: bool
+    data: Optional[dict[str, Any]] = None
+    error: Optional[ParseErrorData] = None
+    duplicate_warning: Optional[ParseDuplicateWarning] = None
+
+
+# ─── Parse Endpoint ─────────────────────────────────────────────────────
+
+
+@router.get(
+    "/parse",
+    response_model=ParseResponse,
+    summary="Parse a recipe URL",
+)
+async def parse_recipe_url(
+    url: str = Query(..., description="Recipe URL to parse"),
+    session: Session = Depends(get_session),
+) -> ParseResponse:
+    """Parse a recipe URL and return structured data.
+
+    Fetches the URL, extracts recipe data using recipe-scrapers,
+    and checks for duplicate URLs in the database.
+
+    Args:
+        url: The recipe URL to parse.
+        session: Database session for duplicate detection.
+
+    Returns:
+        ParseResponse with:
+        - On success: parsed recipe data in 'data' field
+        - On duplicate: 'duplicate_warning' with existing recipe
+        - On failure: 'error' with code, message, and suggested action
+
+    """
+    # Check for existing recipe with this source_url (duplicate detection)
+    existing_recipe = session.exec(
+        select(Recipe).where(Recipe.source_url == url)
+    ).first()
+
+    # Parse the URL
+    parser = RecipeParser()
+    result: ParseResult = await parser.parse_url(url)
+
+    if not result.success:
+        # Return error response
+        return ParseResponse(
+            success=False,
+            error=ParseErrorData(
+                code=result.error.code.value if result.error else ParseErrorCode.NO_RECIPE_FOUND.value,
+                message=result.error.message if result.error else "Unknown error",
+                suggested_action=result.error.suggested_action
+                if result.error
+                else "Try again or enter the recipe manually.",
+            ),
+        )
+
+    # Success - build response
+    response = ParseResponse(
+        success=True,
+        data=result.data,
+    )
+
+    # Add duplicate warning if URL already exists
+    if existing_recipe:
+        response.duplicate_warning = ParseDuplicateWarning(
+            existing_recipe=RecipePublic.model_validate(existing_recipe)
+        )
+
+    return response
+
+
+# ─── CRUD Endpoints ──────────────────────────────────────────────────────
 
 
 @router.post(
