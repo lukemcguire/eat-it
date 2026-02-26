@@ -48,7 +48,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Data & Deployment (DATA)
 
-- [ ] **DATA-01**: User can export recipes and shopping lists as JSON or CSV
+- [x] **DATA-01**: User can export recipes and shopping lists as JSON or CSV
 - [ ] **DATA-02**: App can be self-hosted via Docker or a single binary with
   minimal setup steps
 
@@ -109,7 +109,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SHOP-04 | 4 | Pending |
 | SHOP-05 | 4 | Pending |
 | SHOP-06 | 4 | Pending |
-| DATA-01 | 2 | Pending |
+| DATA-01 | 2 | Complete |
 | DATA-02 | 5 | Pending |
 | ARCH-01 | 1 | Complete |
 | ARCH-02 | 1 | Complete |
