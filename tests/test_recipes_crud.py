@@ -456,3 +456,97 @@ class TestRecipeNotesEndpoint:
         )
 
         assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+class TestExportRecipes:
+    """Tests for GET /recipes/export endpoint."""
+
+    def test_export_recipes_json(
+        self, client: TestClient, test_session: Session
+    ) -> None:
+        """GET /recipes/export?format=json returns JSON array."""
+        # Create a recipe first
+        recipe = Recipe(
+            title="Test Recipe",
+            instructions="Test instructions",
+        )
+        test_session.add(recipe)
+        test_session.commit()
+
+        response = client.get("/recipes/export?format=json")
+
+        assert response.status_code == status.HTTP_200_OK
+        assert response.headers["content-type"] == "application/json"
+        assert "attachment" in response.headers.get("content-disposition", "")
+        data = response.json()
+        assert isinstance(data, list)
+        assert len(data) >= 1
+        # Verify recipe fields are present
+        first_recipe = data[0]
+        assert "title" in first_recipe
+        assert "instructions" in first_recipe
+
+    def test_export_recipes_csv(
+        self, client: TestClient, test_session: Session
+    ) -> None:
+        """GET /recipes/export?format=csv returns CSV with header."""
+        # Create a recipe first
+        recipe = Recipe(
+            title="CSV Test",
+            instructions="Line 1\nLine 2",  # Test newline escaping
+            tags=["dinner", "quick"],
+        )
+        test_session.add(recipe)
+        test_session.commit()
+
+        response = client.get("/recipes/export?format=csv")
+
+        assert response.status_code == status.HTTP_200_OK
+        assert "text/csv" in response.headers["content-type"]
+        assert "attachment" in response.headers.get("content-disposition", "")
+        content = response.text
+        lines = content.strip().split("\n")
+        # First line is header
+        assert "id,title,description" in lines[0]
+        # Data row should have escaped newlines
+        assert len(lines) >= 2
+
+    def test_export_recipes_content_disposition(
+        self, client: TestClient, test_session: Session
+    ) -> None:
+        """Response has Content-Disposition attachment header."""
+        recipe = Recipe(title="Test", instructions="Test")
+        test_session.add(recipe)
+        test_session.commit()
+
+        # Test JSON
+        response = client.get("/recipes/export?format=json")
+        disposition = response.headers.get("content-disposition", "")
+        assert "attachment" in disposition
+        assert "recipes.json" in disposition
+
+        # Test CSV
+        response = client.get("/recipes/export?format=csv")
+        disposition = response.headers.get("content-disposition", "")
+        assert "attachment" in disposition
+        assert "recipes.csv" in disposition
+
+    def test_export_recipes_invalid_format(self, client: TestClient) -> None:
+        """Invalid format returns 422."""
+        response = client.get("/recipes/export?format=xml")
+
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+    def test_export_recipes_empty(self, client: TestClient) -> None:
+        """Empty collection returns valid empty export."""
+        # Test empty JSON
+        response = client.get("/recipes/export?format=json")
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json() == []
+
+        # Test empty CSV
+        response = client.get("/recipes/export?format=csv")
+        assert response.status_code == status.HTTP_200_OK
+        # CSV should still have header row
+        content = response.text.strip()
+        assert "id,title" in content
