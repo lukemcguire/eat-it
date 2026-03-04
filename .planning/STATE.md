@@ -7,23 +7,23 @@ See: .planning/PROJECT.md (updated 2026-02-23)
 **Core value:** All your recipes and shopping lists live on your own hardware,
 searchable in plain English, with no ads, no accounts required, and no data
 leaving your network.
-**Current focus:** Phase 2 Complete - Ready for Phase 3 or 4
+**Current focus:** Phase 3 (Semantic Search) - In Progress
 
 ## Current Position
 
-Phase: 2 of 5 (Recipe Import and CRUD) - COMPLETE
-Plan: 5 of 5 in current phase
-Status: Completed 02-05 Recipe Export
-Last activity: 2026-02-25 — Completed 02-05 Recipe Export
+Phase: 3 of 5 (Semantic Search) - IN PROGRESS
+Plan: 2 of 4 in current phase
+Status: Completed 03-02 Recipe CRUD Embedding Hooks
+Last activity: 2026-03-04 — Completed 03-02 Recipe CRUD Embedding Hooks
 
-Progress: [========] 100%
+Progress: [====----] 50%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
-- Average duration: 15 min
-- Total execution time: 2.23 hours
+- Total plans completed: 11
+- Average duration: 14 min
+- Total execution time: 2.31 hours
 
 **By Phase:**
 
@@ -31,13 +31,13 @@ Progress: [========] 100%
 |-------|-------|-------|----------|
 | 1. Foundation | 4 | 95min | 24min |
 | 2. Recipe Import | 5 | 39min | 8min |
-| 3. Semantic Search | 0 | TBD | - |
+| 3. Semantic Search | 2 | 10min | 5min |
 | 4. Shopping List | 0 | TBD | - |
 | 5. Frontend/Deploy | 0 | TBD | - |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (5min), 02-02 (5min), 02-03 (10min), 02-04 (12min), 02-05 (2min)
-- Trend: Phase 2 complete
+- Last 5 plans: 02-03 (10min), 02-04 (12min), 02-05 (2min), 03-01 (5min), 03-02 (5min)
+- Trend: Phase 3 in progress
 
 *Updated after each plan completion*
 
@@ -76,6 +76,9 @@ Recent decisions affecting current work:
 - [Phase 02]: Use StaticPool for test database to handle thread pool
 - [Phase 02]: No-op lifespan for tests to avoid loading embedding model
 - [Phase 02-05]: CSV escapes newlines as \n and joins tags with | for safe parsing
+- [03-02]: Generate embeddings before commit for transactional consistency
+- [03-02]: Use session.flush() to get recipe ID before embedding insert
+- [03-02]: Set embedding_model=None in conftest client for existing tests
 
 ### Pending Todos
 
@@ -94,6 +97,6 @@ From research SUMMARY.md - Phase 3 and Phase 4 flags:
 
 ## Session Continuity
 
-Last session: 2026-02-25
-Stopped at: Completed 02-05 Recipe Export (Phase 2 Complete)
-Resume file: .planning/phases/03-semantic-search/ (next phase)
+Last session: 2026-03-04
+Stopped at: Completed 03-02 Recipe CRUD Embedding Hooks
+Resume file: .planning/phases/03-semantic-search/03-03-PLAN.md
