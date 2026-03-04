@@ -19,7 +19,7 @@ import io
 import json
 from typing import Any, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from sqlmodel import Session, col, select
@@ -228,12 +228,14 @@ def export_recipes(
 def create_recipe(
     *,
     session: Session = Depends(get_session),
+    request: Request,
     recipe: RecipeCreate,
 ) -> Recipe:
     """Create a new recipe manually or from parsed URL data.
 
     Args:
         session: Database session from dependency injection.
+        request: FastAPI request object for accessing app state.
         recipe: Recipe data for creation.
 
     Returns:
@@ -242,6 +244,33 @@ def create_recipe(
     """
     db_recipe = Recipe.model_validate(recipe)
     session.add(db_recipe)
+    # Flush to get the recipe ID before commit
+    session.flush()
+
+    # Generate and store embedding (best effort, silent failure)
+    # Do this BEFORE commit so it's part of the same transaction
+    if request.app.state.embedding_model:
+        try:
+            from eat_it.services.embedding import (
+                generate_embedding,
+                recipe_to_text,
+                serialize_f32,
+            )
+
+            text = recipe_to_text(db_recipe)
+            embedding = generate_embedding(text, request.app.state.embedding_model)
+            embedding_binary = serialize_f32(embedding)
+
+            conn = session.connection().connection.dbapi_connection
+            cursor = conn.cursor()
+            cursor.execute(
+                "INSERT INTO recipe_embeddings(rowid, embedding) VALUES (?, ?)",
+                [db_recipe.id, embedding_binary],
+            )
+            cursor.close()
+        except Exception:
+            pass  # Silent failure per CONTEXT.md
+
     session.commit()
     session.refresh(db_recipe)
     return db_recipe
