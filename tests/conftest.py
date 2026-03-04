@@ -119,6 +119,8 @@ def client(test_engine) -> Generator[TestClient, None, None]:
     test_app.dependency_overrides[get_session] = override_get_session
 
     with TestClient(test_app) as test_client:
+        # Set embedding_model to None for tests (no model loaded)
+        test_client.app.state.embedding_model = None
         yield test_client
 
     test_app.dependency_overrides.clear()
