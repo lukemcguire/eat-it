@@ -116,7 +116,11 @@ them with household members for collaborative grocery shopping.
      (sync on page refresh)
   6. User can share a shopping list via a simple link or PIN without
      creating an account
-**Plans**: TBD
+**Plans**: 3 plans
+
+- [ ] 04-01-PLAN.md - Store sections model and ingredient combining service
+- [ ] 04-02-PLAN.md - Shopping list CRUD and generate endpoint
+- [ ] 04-03-PLAN.md - WebSocket sync and shareable links
 
 ### Phase 5: Frontend and Deployment
 **Goal**: Users can access the full application through a mobile-optimized
