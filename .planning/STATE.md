@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 05-02 Frontend API Integration
-last_updated: "2026-03-04T15:42:13.928Z"
+stopped_at: Completed 05-01-PLAN.md
+last_updated: "2026-03-04T15:44:13.165Z"
 last_activity: 2026-03-04 — Completed 05-00 Test Infrastructure
 progress:
   total_phases: 5
   completed_phases: 4
   total_plans: 20
-  completed_plans: 17
+  completed_plans: 18
   percent: 79
 ---
 
@@ -61,6 +61,7 @@ Progress: [███████░░░] 79%
 | Phase 05-frontend-and-deployment P00 | 8 | 5 tasks | 6 files |
 | Phase 05-frontend-and-deployment P02 | 9min | 5 tasks | 15 files |
 | Phase 05-frontend-and-deployment P02 | 9 | 5 tasks | 15 files |
+| Phase 05 P01 | 11min | 4 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -112,6 +113,9 @@ Recent decisions affecting current work:
 - [05-00]: E2E tests verify file existence before Dockerfile creation
 - [Phase 05-02]: Use URLSearchParams for query string building (order-independent in tests)
 - [Phase 05-02]: Create minimal App.tsx with QueryClientProvider instead of full prototype
+- [Phase 05-01]: SPA fallback only serves index.html when static/ directory exists
+- [Phase 05-01]: Catch-all route excludes API prefixes to avoid intercepting API routes
+- [Phase 05-01]: Named volume eat-it-data for SQLite persistence across container restarts
 
 ### Pending Todos
 
@@ -130,6 +134,6 @@ From research SUMMARY.md - Phase 3 and Phase 4 flags:
 
 ## Session Continuity
 
-Last session: 2026-03-04T15:42:13.925Z
-Stopped at: Completed 05-02 Frontend API Integration
+Last session: 2026-03-04T15:44:13.161Z
+Stopped at: Completed 05-01-PLAN.md
 Resume file: None
