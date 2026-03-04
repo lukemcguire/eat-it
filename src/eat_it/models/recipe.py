@@ -33,6 +33,8 @@ class Ingredient(SQLModel, table=True):
     name: str
     preparation: Optional[str] = None  # "diced", "minced", etc.
     raw: str  # Original unparsed string
+    # Order within group (gaps allowed, no renumbering on delete)
+    display_order: int = Field(default=0, ge=0)
 
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
