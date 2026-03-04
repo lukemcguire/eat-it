@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  eat-it:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - "${EAT_IT_PORT:-8000}:8000"
+    volumes:
+      - eat-it-data:/app/data
+    environment:
+      - EAT_IT_DATABASE_URL=sqlite:///./data/eat-it.db
+      - EAT_IT_PORT=8000
+      - EAT_IT_ENVIRONMENT=production
+    restart: unless-stopped
+
+volumes:
+  eat-it-data:
