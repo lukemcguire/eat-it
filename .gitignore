@@ -210,3 +210,9 @@ __marimo__/
 # Local runtime data
 data/
 .claude/
+
+# Frontend
+frontend/node_modules/
+frontend/pnpm-lock.yaml
+frontend/package-lock.json
+frontend/dist/

@@ -2,9 +2,12 @@
 
 import logging
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import AsyncGenerator
 
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from eat_it.config import get_settings
 from eat_it.database import get_session, init_db
@@ -75,6 +78,43 @@ app.include_router(health_router)
 app.include_router(recipes_router, prefix="/recipes")
 app.include_router(search_router, tags=["search"])
 app.include_router(shopping_lists_router, prefix="/shopping-lists")
+
+# Serve static files in production (built frontend)
+static_dir = Path(__file__).parent.parent.parent / "static"
+STATIC_DIR_EXISTS = static_dir.exists()
+
+# API prefixes that should not be caught by SPA fallback
+API_PREFIXES = ("/health", "/recipes", "/search", "/shopping-lists", "/docs", "/redoc", "/openapi.json")
+
+if STATIC_DIR_EXISTS:
+    app.mount(
+        "/assets", StaticFiles(directory=static_dir / "assets"), name="assets"
+    )
+
+
+@app.get("/{full_path:path}")
+async def serve_spa(full_path: str) -> FileResponse:
+    """Serve index.html for client-side routing (SPA fallback).
+
+    Only serves the SPA when static files exist (production mode).
+    In development, the frontend dev server handles routing.
+    """
+    # Normalize path for matching (full_path doesn't include leading /)
+    path_with_slash = f"/{full_path}"
+
+    # Don't intercept API routes
+    if path_with_slash.startswith(API_PREFIXES):
+        from fastapi import HTTPException
+
+        raise HTTPException(status_code=404, detail="Not found")
+
+    if not STATIC_DIR_EXISTS:
+        # In development, return 404 - frontend dev server handles this
+        from fastapi import HTTPException
+
+        raise HTTPException(status_code=404, detail="Not found")
+    return FileResponse(static_dir / "index.html")
+
 
 # Expose session dependency for routes
 __all__ = ["app", "get_session"]
