@@ -27,7 +27,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   KNN search, and natural language query support
 - [x] **Phase 4: Shopping List** - Recipe-to-list generation, ingredient
   deduplication, manual editing, shareable links, and polling sync
-- [ ] **Phase 5: Frontend and Deployment** - Mobile-optimized React SPA,
+- [x] **Phase 5: Frontend and Deployment** - Mobile-optimized React SPA,
   Docker container, and self-hosting setup
 
 ## Phase Details
@@ -120,7 +120,7 @@ them with household members for collaborative grocery shopping.
 
 - [x] 04-01-PLAN.md - Store sections model and ingredient combining service
 - [x] 04-02-PLAN.md - Shopping list CRUD and generate endpoint
-- [ ] 04-03-PLAN.md - WebSocket sync and shareable links
+- [x] 04-03-PLAN.md - WebSocket sync and shareable links
 
 ### Phase 5: Frontend and Deployment
 **Goal**: Users can access the full application through a mobile-optimized
@@ -138,12 +138,12 @@ web interface and deploy it via Docker with minimal setup.
      SQLite database
 **Plans**: 4 plans
 
-- [ ] 05-01-PLAN.md - Docker infrastructure (Dockerfile, docker-compose,
+- [x] 05-01-PLAN.md - Docker infrastructure (Dockerfile, docker-compose,
   StaticFiles)
-- [ ] 05-02-PLAN.md - Frontend integration (TanStack Query, API hooks)
-- [ ] 05-03-PLAN.md - Layout components (TouchButton, Header, BottomNav,
+- [x] 05-02-PLAN.md - Frontend integration (TanStack Query, API hooks)
+- [x] 05-03-PLAN.md - Layout components (TouchButton, Header, BottomNav,
   Sidebar)
-- [ ] 05-04-PLAN.md - AppLayout and routing (AppLayout wrapper, App.tsx)
+- [x] 05-04-PLAN.md - AppLayout and routing (AppLayout wrapper, App.tsx)
 
 ## Progress
 
@@ -155,8 +155,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 1. Foundation and Data Layer | 4/4 | Complete | 2026-02-25 |
 | 2. Recipe Import and CRUD | 5/5 | Complete | 2026-02-25 |
 | 3. Semantic Search | 3/3 | Complete | 2026-03-04 |
-| 4. Shopping List | 2/3 | In Progress | - |
-| 5. Frontend and Deployment | 0/4 | Not started | - |
+| 4. Shopping List | 3/3 | Complete | 2026-03-04 |
+| 5. Frontend and Deployment | 4/4 | Complete | 2026-03-04 |
 
 ---
 *Roadmap created: 2026-02-23*
