@@ -20,6 +20,7 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect, status
+from pydantic import BaseModel, ConfigDict
 from sqlmodel import Session, col, select
 
 from eat_it.database import get_session
@@ -98,6 +99,45 @@ def list_shopping_lists(
     return ShoppingListsPublic(
         data=[ShoppingListPublic.model_validate(lst) for lst in lists],
         count=len(lists),
+    )
+
+
+class StoreSectionPublic(BaseModel):
+    """Schema for store section response."""
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    name: str
+    sort_order: int
+    is_default: bool
+
+
+class StoreSectionsPublic(BaseModel):
+    """Schema for list of store sections."""
+    data: list[StoreSectionPublic]
+    count: int
+
+
+@router.get(
+    "/sections",
+    response_model=StoreSectionsPublic,
+    summary="List all store sections",
+)
+def list_store_sections(
+    *,
+    session: Session = Depends(get_session),
+) -> StoreSectionsPublic:
+    """List all store sections for organizing shopping list items.
+
+    Returns sections ordered by sort_order.
+    """
+    sections = session.exec(
+        select(StoreSection).order_by(col(StoreSection.sort_order).asc())
+    ).all()
+
+    return StoreSectionsPublic(
+        data=[StoreSectionPublic.model_validate(s) for s in sections],
+        count=len(sections),
     )
 
 
