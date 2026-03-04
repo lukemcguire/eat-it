@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Completed 02-05 Recipe Export (Phase 2 Complete)
-last_updated: "2026-03-04T09:34:04.292Z"
-last_activity: 2026-02-25 — Completed 02-05 Recipe Export
+status: in_progress
+stopped_at: Completed 04-02 Shopping List CRUD API
+last_updated: "2026-03-04T10:09:18Z"
+last_activity: 2026-03-04 — Completed 04-02 Shopping List CRUD API
 progress:
   total_phases: 5
   completed_phases: 2
   total_plans: 15
-  completed_plans: 11
-  percent: 73
+  completed_plans: 13
+  percent: 87
 ---
 
 # Project State
@@ -23,23 +23,23 @@ See: .planning/PROJECT.md (updated 2026-02-23)
 **Core value:** All your recipes and shopping lists live on your own hardware,
 searchable in plain English, with no ads, no accounts required, and no data
 leaving your network.
-**Current focus:** Phase 2 Complete - Ready for Phase 3 or 4
+**Current focus:** Phase 4 (Shopping List) - In Progress
 
 ## Current Position
 
-Phase: 2 of 5 (Recipe Import and CRUD) - COMPLETE
-Plan: 5 of 5 in current phase
-Status: Completed 02-05 Recipe Export
-Last activity: 2026-02-25 — Completed 02-05 Recipe Export
+Phase: 4 of 5 (Shopping List) - IN PROGRESS
+Plan: 2 of 5 in current phase
+Status: Completed 04-02 Shopping List CRUD API
+Last activity: 2026-03-04 — Completed 04-02 Shopping List CRUD API
 
-Progress: [███████░░░] 73%
+Progress: [███████░░░] 87%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
-- Average duration: 15 min
-- Total execution time: 2.23 hours
+- Total plans completed: 13
+- Average duration: 14 min
+- Total execution time: 3.03 hours
 
 **By Phase:**
 
@@ -48,12 +48,12 @@ Progress: [███████░░░] 73%
 | 1. Foundation | 4 | 95min | 24min |
 | 2. Recipe Import | 5 | 39min | 8min |
 | 3. Semantic Search | 0 | TBD | - |
-| 4. Shopping List | 0 | TBD | - |
+| 4. Shopping List | 2 | 12min | 6min |
 | 5. Frontend/Deploy | 0 | TBD | - |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (5min), 02-02 (5min), 02-03 (10min), 02-04 (12min), 02-05 (2min)
-- Trend: Phase 2 complete
+- Last 5 plans: 04-01 (7min), 04-02 (5min)
+- Trend: Phase 4 in progress
 
 *Updated after each plan completion*
 | Phase 04-shopping-list P01 | 5 | - tasks | 7 files |
@@ -93,6 +93,9 @@ Recent decisions affecting current work:
 - [Phase 02]: Use StaticPool for test database to handle thread pool
 - [Phase 02]: No-op lifespan for tests to avoid loading embedding model
 - [Phase 02-05]: CSV escapes newlines as \n and joins tags with | for safe parsing
+- [04-02]: Shopping list items ordered by section sort_order then display_order
+- [04-02]: Invalid recipe IDs silently skipped in generate endpoint (graceful degradation)
+- [04-02]: ShoppingListsPublic excludes items for performance, ShoppingListPublic includes them
 
 ### Pending Todos
 
@@ -111,6 +114,6 @@ From research SUMMARY.md - Phase 3 and Phase 4 flags:
 
 ## Session Continuity
 
-Last session: 2026-02-25
-Stopped at: Completed 02-05 Recipe Export (Phase 2 Complete)
-Resume file: .planning/phases/03-semantic-search/ (next phase)
+Last session: 2026-03-04
+Stopped at: Completed 04-02 Shopping List CRUD API
+Resume file: .planning/phases/04-shopping-list/ (next plan: 04-03)

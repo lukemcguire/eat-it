@@ -33,9 +33,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Shopping Lists (SHOP)
 
-- [ ] **SHOP-01**: User can select one or more recipes and generate a shopping
+- [x] **SHOP-01**: User can select one or more recipes and generate a shopping
   list with ingredients deduplicated and quantities summed
-- [ ] **SHOP-02**: User can add, remove, edit, and adjust quantities of items
+- [x] **SHOP-02**: User can add, remove, edit, and adjust quantities of items
   on a shopping list
 - [ ] **SHOP-03**: User can check off items on a mobile-optimized list view
   with large tap targets (44px minimum)
@@ -103,8 +103,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RECIPE-06 | 2 | Complete |
 | SEARCH-01 | 3 | Pending |
 | SEARCH-02 | 3 | Pending |
-| SHOP-01 | 4 | Pending |
-| SHOP-02 | 4 | Pending |
+| SHOP-01 | 4 | Complete |
+| SHOP-02 | 4 | Complete |
 | SHOP-03 | 4 | Pending |
 | SHOP-04 | 4 | Pending |
 | SHOP-05 | 4 | Pending |

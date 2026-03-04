@@ -20,7 +20,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation and Data Layer** - SQLite with WAL mode,
   sqlite-vec extension, Alembic migrations, and core SQLModel schemas
-- [ ] **Phase 2: Recipe Import and CRUD** - URL import with preview-before-save,
+- [x] **Phase 2: Recipe Import and CRUD** - URL import with preview-before-save,
   manual entry, rating/notes, duplicate detection, keyword search, and data
   export
 - [ ] **Phase 3: Semantic Search** - Local embedding generation, sqlite-vec
@@ -73,10 +73,10 @@ enter recipes manually, and perform full CRUD operations with export.
 **Plans**: 5 plans
 
 - [x] 02-01-PLAN.md - Recipe model extensions (rating/notes, Pydantic schemas)
-- [ ] 02-02-PLAN.md - Recipe CRUD API (list, get, create, update, delete)
-- [ ] 02-03-PLAN.md - Recipe import/parse (URL parsing, duplicate detection)
-- [ ] 02-04-PLAN.md - Recipe annotations (rating/notes endpoints)
-- [ ] 02-05-PLAN.md - Recipe export (JSON/CSV download)
+- [x] 02-02-PLAN.md - Recipe CRUD API (list, get, create, update, delete)
+- [x] 02-03-PLAN.md - Recipe import/parse (URL parsing, duplicate detection)
+- [x] 02-04-PLAN.md - Recipe annotations (rating/notes endpoints)
+- [x] 02-05-PLAN.md - Recipe export (JSON/CSV download)
 
 ### Phase 3: Semantic Search
 **Goal**: Users can find recipes using natural language queries powered by
@@ -118,8 +118,8 @@ them with household members for collaborative grocery shopping.
      creating an account
 **Plans**: 3 plans
 
-- [ ] 04-01-PLAN.md - Store sections model and ingredient combining service
-- [ ] 04-02-PLAN.md - Shopping list CRUD and generate endpoint
+- [x] 04-01-PLAN.md - Store sections model and ingredient combining service
+- [x] 04-02-PLAN.md - Shopping list CRUD and generate endpoint
 - [ ] 04-03-PLAN.md - WebSocket sync and shareable links
 
 ### Phase 5: Frontend and Deployment
@@ -146,9 +146,9 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation and Data Layer | 4/4 | Complete | 2026-02-25 |
-| 2. Recipe Import and CRUD | 1/5 | In Progress | - |
+| 2. Recipe Import and CRUD | 5/5 | Complete | 2026-02-25 |
 | 3. Semantic Search | 0/TBD | Not started | - |
-| 4. Shopping List | 0/TBD | Not started | - |
+| 4. Shopping List | 2/3 | In Progress | - |
 | 5. Frontend and Deployment | 0/TBD | Not started | - |
 
 ---
