@@ -65,6 +65,14 @@ def run_migrations_offline() -> None:
         context.run_migrations()
 
 
+def _load_sqlite_vec(dbapi_connection, connection_record) -> None:  # noqa: ARG001
+    """Load sqlite-vec extension on connect."""
+    dbapi_connection.enable_load_extension(True)
+    import sqlite_vec
+
+    sqlite_vec.load(dbapi_connection)
+
+
 def run_migrations_online() -> None:
     """Run migrations in 'online' mode.
 
@@ -72,16 +80,19 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
+    from sqlalchemy import event, engine_from_config
+
     connectable = context.config.attributes.get("connection", None)
 
     if connectable is None:
-        from sqlalchemy import engine_from_config
-
         connectable = engine_from_config(
             config.get_section(config.config_ini_section, {}),
             prefix="sqlalchemy.",
             poolclass=pool.NullPool,
         )
+
+    # Load sqlite-vec extension for virtual table support
+    event.listen(connectable, "connect", _load_sqlite_vec)
 
     with connectable.connect() as connection:
         context.configure(
