@@ -73,3 +73,36 @@ class TestDockerfile:
         """Verify .dockerignore exists."""
         dockerignore = Path(__file__).parent.parent.parent / "docker" / ".dockerignore"
         assert dockerignore.exists(), f".dockerignore not found"
+
+
+class TestDockerCompose:
+    """Tests for docker-compose configuration."""
+
+    def test_docker_compose_exists(self):
+        """Verify docker-compose.yml exists at project root."""
+        compose = Path(__file__).parent.parent.parent / "docker-compose.yml"
+        assert compose.exists(), f"docker-compose.yml not found at {compose}"
+
+    def test_docker_compose_has_volume(self):
+        """Verify docker-compose.yml has volume for data persistence."""
+        compose = Path(__file__).parent.parent.parent / "docker-compose.yml"
+        content = compose.read_text()
+        assert "volumes:" in content, "docker-compose.yml missing volumes configuration"
+
+    def test_docker_compose_has_eat_it_data_volume(self):
+        """Verify docker-compose.yml has eat-it-data volume."""
+        compose = Path(__file__).parent.parent.parent / "docker-compose.yml"
+        content = compose.read_text()
+        assert "eat-it-data" in content, "docker-compose.yml missing eat-it-data volume"
+
+    def test_docker_compose_has_port_mapping(self):
+        """Verify docker-compose.yml has port mapping."""
+        compose = Path(__file__).parent.parent.parent / "docker-compose.yml"
+        content = compose.read_text()
+        assert "8000" in content, "docker-compose.yml missing port 8000 mapping"
+
+    def test_docker_compose_has_environment_variables(self):
+        """Verify docker-compose.yml has environment variables."""
+        compose = Path(__file__).parent.parent.parent / "docker-compose.yml"
+        content = compose.read_text()
+        assert "EAT_IT_" in content, "docker-compose.yml missing EAT_IT_ environment variables"
