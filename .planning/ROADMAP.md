@@ -136,17 +136,19 @@ web interface and deploy it via Docker with minimal setup.
      minimal configuration
   4. Application data persists across container restarts via volume-mounted
      SQLite database
-**Plans**: 3 plans
+**Plans**: 4 plans
 
 - [ ] 05-01-PLAN.md - Docker infrastructure (Dockerfile, docker-compose,
   StaticFiles)
 - [ ] 05-02-PLAN.md - Frontend integration (TanStack Query, API hooks)
-- [ ] 05-03-PLAN.md - Responsive layout (AppLayout, BottomNav, Sidebar)
+- [ ] 05-03-PLAN.md - Layout components (TouchButton, Header, BottomNav,
+  Sidebar)
+- [ ] 05-04-PLAN.md - AppLayout and routing (AppLayout wrapper, App.tsx)
 
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -154,7 +156,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 2. Recipe Import and CRUD | 1/5 | In Progress | - |
 | 3. Semantic Search | 0/TBD | Not started | - |
 | 4. Shopping List | 0/TBD | Not started | - |
-| 5. Frontend and Deployment | 0/3 | Not started | - |
+| 5. Frontend and Deployment | 0/4 | Not started | - |
 
 ---
 *Roadmap created: 2026-02-23*
