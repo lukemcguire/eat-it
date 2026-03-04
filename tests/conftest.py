@@ -33,6 +33,14 @@ def _set_test_pragma(dbapi_connection, connection_record) -> None:  # noqa: ARG0
     cursor.execute("PRAGMA foreign_keys=ON")
     cursor.close()
 
+    # Create the recipe_embeddings virtual table for semantic search tests
+    cursor = dbapi_connection.cursor()
+    cursor.execute(
+        "CREATE VIRTUAL TABLE IF NOT EXISTS recipe_embeddings "
+        "USING vec0(embedding FLOAT[384])"
+    )
+    cursor.close()
+
 
 @pytest.fixture
 def test_engine():
