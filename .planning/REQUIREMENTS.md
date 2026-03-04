@@ -37,13 +37,13 @@ Requirements for initial release. Each maps to roadmap phases.
   list with ingredients deduplicated and quantities summed
 - [x] **SHOP-02**: User can add, remove, edit, and adjust quantities of items
   on a shopping list
-- [ ] **SHOP-03**: User can check off items on a mobile-optimized list view
+- [x] **SHOP-03**: User can check off items on a mobile-optimized list view
   with large tap targets (44px minimum)
-- [ ] **SHOP-04**: Shopping list is accessible from multiple browsers/devices
+- [x] **SHOP-04**: Shopping list is accessible from multiple browsers/devices
   on the same local network or a cloud-hosted self-install
-- [ ] **SHOP-05**: A second user can view and check off items from a shared
+- [x] **SHOP-05**: A second user can view and check off items from a shared
   shopping list (sync on refresh; no websockets in MVP)
-- [ ] **SHOP-06**: User can share a shopping list via a simple link or PIN
+- [x] **SHOP-06**: User can share a shopping list via a simple link or PIN
   (no mandatory account creation)
 
 ### Data & Deployment (DATA)
@@ -105,10 +105,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SEARCH-02 | 3 | Pending |
 | SHOP-01 | 4 | Complete |
 | SHOP-02 | 4 | Complete |
-| SHOP-03 | 4 | Pending |
-| SHOP-04 | 4 | Pending |
-| SHOP-05 | 4 | Pending |
-| SHOP-06 | 4 | Pending |
+| SHOP-03 | 4 | Complete |
+| SHOP-04 | 4 | Complete |
+| SHOP-05 | 4 | Complete |
+| SHOP-06 | 4 | Complete |
 | DATA-01 | 2 | Complete |
 | DATA-02 | 5 | Pending |
 | ARCH-01 | 1 | Complete |
