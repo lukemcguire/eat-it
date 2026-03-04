@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Completed 05-04-PLAN.md
-last_updated: "2026-03-04T16:10:52.406Z"
-last_activity: 2026-03-04 — Completed 05-04 AppLayout Integration
+status: in_progress
+stopped_at: Phase 4.1 Plan 01 complete
+last_updated: "2026-03-04T20:08:08Z"
+last_activity: 2026-03-04 — Completed 04.1-01 Model and Schemas
 progress:
-  total_phases: 5
+  total_phases: 7
   completed_phases: 5
-  total_plans: 20
-  completed_plans: 20
+  total_plans: 21
+  completed_plans: 21
   percent: 100
 ---
 
@@ -23,14 +23,14 @@ See: .planning/PROJECT.md (updated 2026-02-23)
 **Core value:** All your recipes and shopping lists live on your own hardware,
 searchable in plain English, with no ads, no accounts required, and no data
 leaving your network.
-**Current focus:** Phase 5 (Frontend and Deployment) - In Progress
+**Current focus:** Phase 04.1 (Recipe Ingredient Management) - In Progress
 
 ## Current Position
 
-Phase: 5 of 5 (Frontend and Deployment) - IN PROGRESS
-Plan: 5 of 5 in current phase (Final plan)
-Status: Completed 05-04 AppLayout Integration
-Last activity: 2026-03-04 — Completed 05-04 AppLayout Integration
+Phase: 04.1 of 04.1 (Recipe Ingredient Management) - IN PROGRESS
+Plan: 1 of 4 in current phase
+Status: Completed 04.1-01 Model and Schemas
+Last activity: 2026-03-04 — Completed 04.1-01 Model and Schemas
 
 Progress: [██████████] 100%
 
@@ -119,6 +119,12 @@ Recent decisions affecting current work:
 - [Phase 05-03]: BottomNav hidden on desktop (lg:hidden), Sidebar hidden on mobile (hidden lg:flex)
 - [Phase 05-04]: Use Outlet from react-router-dom for nested route content instead of children prop
 - [Phase 05-04]: Layout routes use element prop without path, child routes render inside Outlet
+- [04.1-01]: display_order field defaults to 0, gaps allowed (no renumbering on delete)
+- [04.1-01]: Pydantic schemas follow Base/Create/Update/Public pattern for ingredient CRUD
+
+### Roadmap Evolution
+
+- Phase 04.1 inserted after Phase 4: Recipe ingredient management - CRUD endpoints for ingredient groups and ingredients (URGENT)
 
 ### Pending Todos
 
@@ -137,6 +143,6 @@ From research SUMMARY.md - Phase 3 and Phase 4 flags:
 
 ## Session Continuity
 
-Last session: 2026-03-04T16:00:45Z
-Stopped at: Completed 05-04-PLAN.md
-Resume file: None
+Last session: 2026-03-04T20:08:08Z
+Stopped at: Completed 04.1-01 Model and Schemas
+Resume file: .planning/phases/04.1-recipe-ingredient-management-crud-endpoints-for-ingredient-groups-and-ingredients/04.1-02-PLAN.md
