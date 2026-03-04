@@ -22,6 +22,8 @@ class Settings(BaseSettings):
 
     database_url: str = "sqlite:///./data/eat-it.db"
     embedding_model: str = "all-MiniLM-L6-v2"
+    port: int = 8000
+    environment: str = "production"
 
 
 @lru_cache
