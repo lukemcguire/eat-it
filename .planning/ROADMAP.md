@@ -20,10 +20,10 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation and Data Layer** - SQLite with WAL mode,
   sqlite-vec extension, Alembic migrations, and core SQLModel schemas
-- [ ] **Phase 2: Recipe Import and CRUD** - URL import with preview-before-save,
+- [x] **Phase 2: Recipe Import and CRUD** - URL import with preview-before-save,
   manual entry, rating/notes, duplicate detection, keyword search, and data
   export
-- [ ] **Phase 3: Semantic Search** - Local embedding generation, sqlite-vec
+- [x] **Phase 3: Semantic Search** - Local embedding generation, sqlite-vec
   KNN search, and natural language query support
 - [ ] **Phase 4: Shopping List** - Recipe-to-list generation, ingredient
   deduplication, manual editing, shareable links, and polling sync
@@ -73,10 +73,10 @@ enter recipes manually, and perform full CRUD operations with export.
 **Plans**: 5 plans
 
 - [x] 02-01-PLAN.md - Recipe model extensions (rating/notes, Pydantic schemas)
-- [ ] 02-02-PLAN.md - Recipe CRUD API (list, get, create, update, delete)
-- [ ] 02-03-PLAN.md - Recipe import/parse (URL parsing, duplicate detection)
-- [ ] 02-04-PLAN.md - Recipe annotations (rating/notes endpoints)
-- [ ] 02-05-PLAN.md - Recipe export (JSON/CSV download)
+- [x] 02-02-PLAN.md - Recipe CRUD API (list, get, create, update, delete)
+- [x] 02-03-PLAN.md - Recipe import/parse (URL parsing, duplicate detection)
+- [x] 02-04-PLAN.md - Recipe annotations (rating/notes endpoints)
+- [x] 02-05-PLAN.md - Recipe export (JSON/CSV download)
 
 ### Phase 3: Semantic Search
 **Goal**: Users can find recipes using natural language queries powered by
@@ -94,9 +94,9 @@ local embeddings, with no internet or API key required.
      updated (background task)
 **Plans**: 3 plans
 
-- [ ] 03-01-PLAN.md - Embedding infrastructure (vec0 table, service module)
-- [ ] 03-02-PLAN.md - Recipe CRUD embedding hooks (create/update)
-- [ ] 03-03-PLAN.md - Search endpoint (semantic + keyword fallback)
+- [x] 03-01-PLAN.md - Embedding infrastructure (vec0 table, service module)
+- [x] 03-02-PLAN.md - Recipe CRUD embedding hooks (create/update)
+- [x] 03-03-PLAN.md - Search endpoint (semantic + keyword fallback)
 
 ### Phase 4: Shopping List
 **Goal**: Users can generate shopping lists from selected recipes and share
@@ -153,9 +153,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation and Data Layer | 4/4 | Complete | 2026-02-25 |
-| 2. Recipe Import and CRUD | 1/5 | In Progress | - |
-| 3. Semantic Search | 0/TBD | Not started | - |
-| 4. Shopping List | 0/TBD | Not started | - |
+| 2. Recipe Import and CRUD | 5/5 | Complete | 2026-02-25 |
+| 3. Semantic Search | 3/3 | Complete | 2026-03-04 |
+| 4. Shopping List | 0/3 | Not started | - |
 | 5. Frontend and Deployment | 0/4 | Not started | - |
 
 ---
