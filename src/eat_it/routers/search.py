@@ -60,38 +60,38 @@ def search_recipes(
             query_binary = serialize_f32(query_embedding)
 
             conn = session.connection().connection.dbapi_connection
-            try:
-                rows = conn.execute(
-                    """
-                    SELECT rowid as recipe_id, distance
-                    FROM recipe_embeddings
-                    WHERE embedding MATCH ?
-                    ORDER BY distance
-                    LIMIT ?
-                    """,
-                    [query_binary, limit],
-                ).fetchall()
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                SELECT rowid as recipe_id, distance
+                FROM recipe_embeddings
+                WHERE embedding MATCH ?
+                ORDER BY distance
+                LIMIT ?
+                """,
+                [query_binary, limit],
+            )
+            rows = cursor.fetchall()
+            cursor.close()
 
-                if rows:
-                    # Filter by distance threshold (L2 distance)
-                    recipe_ids = [
-                        r[0] for r in rows if r[1] < SEMANTIC_DISTANCE_THRESHOLD
-                    ]
+            if rows:
+                # Filter by distance threshold (L2 distance)
+                recipe_ids = [
+                    r[0] for r in rows if r[1] < SEMANTIC_DISTANCE_THRESHOLD
+                ]
 
-                    if recipe_ids:
-                        # Fetch recipes preserving KNN order
-                        id_to_distance = {
-                            r[0]: r[1] for r in rows if r[1] < SEMANTIC_DISTANCE_THRESHOLD
-                        }
-                        recipes = session.exec(
-                            select(Recipe).where(Recipe.id.in_(recipe_ids))
-                        ).all()
-                        results = sorted(
-                            recipes,
-                            key=lambda r: id_to_distance.get(r.id, float("inf")),
-                        )
-            finally:
-                conn.close()
+                if recipe_ids:
+                    # Fetch recipes preserving KNN order
+                    id_to_distance = {
+                        r[0]: r[1] for r in rows if r[1] < SEMANTIC_DISTANCE_THRESHOLD
+                    }
+                    recipes = session.exec(
+                        select(Recipe).where(Recipe.id.in_(recipe_ids))
+                    ).all()
+                    results = sorted(
+                        recipes,
+                        key=lambda r: id_to_distance.get(r.id, float("inf")),
+                    )
         except Exception:
             pass  # Fall through to keyword search
 
