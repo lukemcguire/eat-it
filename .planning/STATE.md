@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in_progress
-stopped_at: Phase 4.1 Plan 01 complete
-last_updated: "2026-03-04T20:08:08Z"
+status: completed
+stopped_at: Completed 04.1-01 Model and Schemas
+last_updated: "2026-03-04T20:15:30.366Z"
 last_activity: 2026-03-04 — Completed 04.1-01 Model and Schemas
 progress:
-  total_phases: 7
+  total_phases: 6
   completed_phases: 5
-  total_plans: 21
-  completed_plans: 21
+  total_plans: 23
+  completed_plans: 22
   percent: 100
 ---
 
@@ -28,9 +28,9 @@ leaving your network.
 ## Current Position
 
 Phase: 04.1 of 04.1 (Recipe Ingredient Management) - IN PROGRESS
-Plan: 1 of 4 in current phase
-Status: Completed 04.1-01 Model and Schemas
-Last activity: 2026-03-04 — Completed 04.1-01 Model and Schemas
+Plan: 2 of 4 in current phase
+Status: Completed 04.1-02 Ingredient Router CRUD Endpoints
+Last activity: 2026-03-04 — Completed 04.1-02 Ingredient Router CRUD Endpoints
 
 Progress: [██████████] 100%
 
@@ -60,6 +60,7 @@ Progress: [██████████] 100%
 | Phase 05 P01 | 11min | 4 tasks | 7 files |
 | Phase 05-frontend-and-deployment P03 | 5min | 4 tasks | 9 files |
 | Phase 05-frontend-and-deployment P04 | 4min | 2 tasks | 4 files |
+| Phase 04.1 P02 | 2min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -121,6 +122,9 @@ Recent decisions affecting current work:
 - [Phase 05-04]: Layout routes use element prop without path, child routes render inside Outlet
 - [04.1-01]: display_order field defaults to 0, gaps allowed (no renumbering on delete)
 - [04.1-01]: Pydantic schemas follow Base/Create/Update/Public pattern for ingredient CRUD
+- [04.1-02]: Default group name is "Ingredients" when auto-creating
+- [04.1-02]: Empty groups auto-deleted when all ingredients removed
+- [04.1-02]: Bulk replace operations are all-or-nothing (single transaction)
 
 ### Roadmap Evolution
 
@@ -143,6 +147,6 @@ From research SUMMARY.md - Phase 3 and Phase 4 flags:
 
 ## Session Continuity
 
-Last session: 2026-03-04T20:08:08Z
-Stopped at: Completed 04.1-01 Model and Schemas
-Resume file: .planning/phases/04.1-recipe-ingredient-management-crud-endpoints-for-ingredient-groups-and-ingredients/04.1-02-PLAN.md
+Last session: 2026-03-04T20:14:45Z
+Stopped at: Completed 04.1-02 Ingredient Router CRUD Endpoints
+Resume file: .planning/phases/04.1-recipe-ingredient-management-crud-endpoints-for-ingredient-groups-and-ingredients/04.1-03-PLAN.md

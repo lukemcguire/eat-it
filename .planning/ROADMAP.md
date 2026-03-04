@@ -130,7 +130,7 @@ them with household members for collaborative grocery shopping.
 within recipes through RESTful CRUD endpoints with bulk operations support.
 **Requirements:** ING-01, ING-02, ING-03, ING-04, ING-05, ING-06
 **Depends on:** Phase 4
-**Plans:** 3 plans
+**Plans:** 2/3 plans executed
 
 Plans:
 - [x] 04.1-01-PLAN.md - Database schema and Pydantic schemas
@@ -171,7 +171,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 04.1 -> 5
 | 2. Recipe Import and CRUD | 5/5 | Complete | 2026-02-25 |
 | 3. Semantic Search | 3/3 | Complete | 2026-03-04 |
 | 4. Shopping List | 3/3 | Complete | 2026-03-04 |
-| 04.1. Recipe Ingredient Management | 1/3 | In Progress | 2026-03-04 |
+| 04.1. Recipe Ingredient Management | 2/3 | In Progress|  |
 | 5. Frontend and Deployment | 4/4 | Complete | 2026-03-04 |
 
 ---

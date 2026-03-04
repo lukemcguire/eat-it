@@ -65,15 +65,15 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **ING-04**: Ingredient model has display_order field for ordering within
   groups (gaps allowed, no renumbering on delete)
-- [ ] **ING-01**: User can create, read, update, and delete ingredient groups
+- [x] **ING-01**: User can create, read, update, and delete ingredient groups
   within a recipe
-- [ ] **ING-02**: User can create, read, update, and delete individual
+- [x] **ING-02**: User can create, read, update, and delete individual
   ingredients within a recipe
-- [ ] **ING-03**: User can bulk replace all ingredient groups and ingredients
+- [x] **ING-03**: User can bulk replace all ingredient groups and ingredients
   for a recipe in a single request
-- [ ] **ING-05**: Empty ingredient groups are automatically deleted when all
+- [x] **ING-05**: Empty ingredient groups are automatically deleted when all
   their ingredients are removed
-- [ ] **ING-06**: A default "Ingredients" group is auto-created when the first
+- [x] **ING-06**: A default "Ingredients" group is auto-created when the first
   ingredient is added to a recipe with no existing groups
 
 ## v2 Requirements
@@ -129,12 +129,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ARCH-01 | 1 | Complete |
 | ARCH-02 | 1 | Complete |
 | ARCH-03 | 1 | Complete |
-| ING-01 | 04.1 | Pending |
-| ING-02 | 04.1 | Pending |
-| ING-03 | 04.1 | Pending |
+| ING-01 | 04.1 | Complete |
+| ING-02 | 04.1 | Complete |
+| ING-03 | 04.1 | Complete |
 | ING-04 | 04.1 | Complete |
-| ING-05 | 04.1 | Pending |
-| ING-06 | 04.1 | Pending |
+| ING-05 | 04.1 | Complete |
+| ING-06 | 04.1 | Complete |
 
 **Coverage:**
 - v1 requirements: 25 total
