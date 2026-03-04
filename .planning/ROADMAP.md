@@ -92,7 +92,11 @@ local embeddings, with no internet or API key required.
      thousand recipes
   4. Embeddings are generated automatically when a recipe is saved or
      updated (background task)
-**Plans**: TBD
+**Plans**: 3 plans
+
+- [ ] 03-01-PLAN.md - Embedding infrastructure (vec0 table, service module)
+- [ ] 03-02-PLAN.md - Recipe CRUD embedding hooks (create/update)
+- [ ] 03-03-PLAN.md - Search endpoint (semantic + keyword fallback)
 
 ### Phase 4: Shopping List
 **Goal**: Users can generate shopping lists from selected recipes and share
