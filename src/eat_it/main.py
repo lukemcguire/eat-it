@@ -12,6 +12,7 @@ from fastapi.staticfiles import StaticFiles
 from eat_it.config import get_settings
 from eat_it.database import get_session, init_db
 from eat_it.routers.health import router as health_router
+from eat_it.routers.ingredients import router as ingredients_router
 from eat_it.routers.recipes import router as recipes_router
 from eat_it.routers.search import router as search_router
 from eat_it.routers.shopping_lists import router as shopping_lists_router
@@ -76,6 +77,7 @@ app = FastAPI(
 # Include routers
 app.include_router(health_router)
 app.include_router(recipes_router, prefix="/recipes")
+app.include_router(ingredients_router, prefix="/recipes", tags=["ingredients"])
 app.include_router(search_router, tags=["search"])
 app.include_router(shopping_lists_router, prefix="/shopping-lists")
 

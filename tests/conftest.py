@@ -107,6 +107,7 @@ def client(test_engine) -> Generator[TestClient, None, None]:
     """
     from eat_it.database import get_session
     from eat_it.routers.health import router as health_router
+    from eat_it.routers.ingredients import router as ingredients_router
     from eat_it.routers.recipes import router as recipes_router
     from eat_it.routers.search import router as search_router
 
@@ -120,6 +121,7 @@ def client(test_engine) -> Generator[TestClient, None, None]:
     # Include the same routers
     test_app.include_router(health_router)
     test_app.include_router(recipes_router, prefix="/recipes", tags=["recipes"])
+    test_app.include_router(ingredients_router, prefix="/recipes", tags=["ingredients"])
     test_app.include_router(search_router, tags=["search"])
 
     def override_get_session():
