@@ -12,18 +12,18 @@ leaving your network.
 ## Current Position
 
 Phase: 3 of 5 (Semantic Search) - IN PROGRESS
-Plan: 2 of 4 in current phase
-Status: Completed 03-02 Recipe CRUD Embedding Hooks
-Last activity: 2026-03-04 — Completed 03-02 Recipe CRUD Embedding Hooks
+Plan: 3 of 4 in current phase
+Status: Completed 03-03 Search Endpoint
+Last activity: 2026-03-04 — Completed 03-03 Search Endpoint
 
-Progress: [====----] 50%
+Progress: [=====---] 75%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
-- Average duration: 14 min
-- Total execution time: 2.31 hours
+- Total plans completed: 12
+- Average duration: 13 min
+- Total execution time: 2.40 hours
 
 **By Phase:**
 
@@ -31,12 +31,12 @@ Progress: [====----] 50%
 |-------|-------|-------|----------|
 | 1. Foundation | 4 | 95min | 24min |
 | 2. Recipe Import | 5 | 39min | 8min |
-| 3. Semantic Search | 2 | 10min | 5min |
+| 3. Semantic Search | 3 | 15min | 5min |
 | 4. Shopping List | 0 | TBD | - |
 | 5. Frontend/Deploy | 0 | TBD | - |
 
 **Recent Trend:**
-- Last 5 plans: 02-03 (10min), 02-04 (12min), 02-05 (2min), 03-01 (5min), 03-02 (5min)
+- Last 5 plans: 02-04 (12min), 02-05 (2min), 03-01 (5min), 03-02 (5min), 03-03 (5min)
 - Trend: Phase 3 in progress
 
 *Updated after each plan completion*
@@ -79,6 +79,8 @@ Recent decisions affecting current work:
 - [03-02]: Generate embeddings before commit for transactional consistency
 - [03-02]: Use session.flush() to get recipe ID before embedding insert
 - [03-02]: Set embedding_model=None in conftest client for existing tests
+- [03-03]: Use cursor pattern for raw DB access (close cursor, not connection)
+- [03-03]: Distance threshold of 1.5 for semantic relevance filtering
 
 ### Pending Todos
 
@@ -98,5 +100,5 @@ From research SUMMARY.md - Phase 3 and Phase 4 flags:
 ## Session Continuity
 
 Last session: 2026-03-04
-Stopped at: Completed 03-02 Recipe CRUD Embedding Hooks
-Resume file: .planning/phases/03-semantic-search/03-03-PLAN.md
+Stopped at: Completed 03-03 Search Endpoint
+Resume file: .planning/phases/03-semantic-search/03-04-PLAN.md

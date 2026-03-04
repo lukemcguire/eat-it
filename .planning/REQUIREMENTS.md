@@ -28,7 +28,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **SEARCH-01**: User can search recipes using natural language queries
   (e.g., "vegetarian dinner for 4") powered by local embeddings — no internet
   or API key required
-- [ ] **SEARCH-02**: User can search by keyword or tag as a fallback when
+- [x] **SEARCH-02**: User can search by keyword or tag as a fallback when
   embedding search is unavailable
 
 ### Shopping Lists (SHOP)
@@ -102,7 +102,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RECIPE-05 | 2 | Complete |
 | RECIPE-06 | 2 | Complete |
 | SEARCH-01 | 3 | Complete |
-| SEARCH-02 | 3 | Pending |
+| SEARCH-02 | 3 | Complete |
 | SHOP-01 | 4 | Pending |
 | SHOP-02 | 4 | Pending |
 | SHOP-03 | 4 | Pending |
