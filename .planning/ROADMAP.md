@@ -25,7 +25,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   export
 - [x] **Phase 3: Semantic Search** - Local embedding generation, sqlite-vec
   KNN search, and natural language query support
-- [ ] **Phase 4: Shopping List** - Recipe-to-list generation, ingredient
+- [x] **Phase 4: Shopping List** - Recipe-to-list generation, ingredient
   deduplication, manual editing, shareable links, and polling sync
 - [ ] **Phase 5: Frontend and Deployment** - Mobile-optimized React SPA,
   Docker container, and self-hosting setup

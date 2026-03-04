@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in_progress
-stopped_at: Phase 4 in progress (2/3 plans complete)
-last_updated: "2026-03-04T10:30:39.518Z"
-last_activity: 2026-03-04 — Completed 04-02 Shopping List CRUD API
+status: completed
+stopped_at: Completed 05-02 Frontend API Integration
+last_updated: "2026-03-04T15:42:13.928Z"
+last_activity: 2026-03-04 — Completed 05-00 Test Infrastructure
 progress:
   total_phases: 5
-  completed_phases: 3
-  total_plans: 19
-  completed_plans: 14
-  percent: 74
+  completed_phases: 4
+  total_plans: 20
+  completed_plans: 17
+  percent: 79
 ---
 
 # Project State
@@ -23,23 +23,23 @@ See: .planning/PROJECT.md (updated 2026-02-23)
 **Core value:** All your recipes and shopping lists live on your own hardware,
 searchable in plain English, with no ads, no accounts required, and no data
 leaving your network.
-**Current focus:** Phase 4 (Shopping List) - In Progress
+**Current focus:** Phase 5 (Frontend and Deployment) - In Progress
 
 ## Current Position
 
-Phase: 4 of 5 (Shopping List) - IN PROGRESS
-Plan: 2 of 3 in current phase
-Status: Completed 04-02 Shopping List CRUD API
-Last activity: 2026-03-04 — Completed 04-02 Shopping List CRUD API
+Phase: 5 of 5 (Frontend and Deployment) - IN PROGRESS
+Plan: 1 of 5 in current phase (Wave 0 complete)
+Status: Completed 05-00 Test Infrastructure
+Last activity: 2026-03-04 — Completed 05-00 Test Infrastructure
 
-Progress: [██████░░░░] 74%
+Progress: [███████░░░] 79%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 14
+- Total plans completed: 15
 - Average duration: 13 min
-- Total execution time: 3.0 hours
+- Total execution time: 3.2 hours
 
 **By Phase:**
 
@@ -48,16 +48,19 @@ Progress: [██████░░░░] 74%
 | 1. Foundation | 4 | 95min | 24min |
 | 2. Recipe Import | 5 | 39min | 8min |
 | 3. Semantic Search | 3 | 15min | 5min |
-| 4. Shopping List | 2 | 12min | 6min |
-| 5. Frontend/Deploy | 0 | TBD | - |
+| 4. Shopping List | 3 | 20min | 7min |
+| 5. Frontend/Deploy | 1 | 8min | 8min |
 
 **Recent Trend:**
-- Last 5 plans: 03-01 (5min), 03-02 (5min), 03-03 (5min), 04-01 (7min), 04-02 (5min)
-- Trend: Phase 4 in progress (2/3 plans)
+- Last 5 plans: 04-01 (7min), 04-02 (5min), 04-03 (8min), 05-00 (8min)
+- Trend: Phase 5 in progress (1/5 plans)
 
 *Updated after each plan completion*
 | Phase 04-shopping-list P01 | 5 | - tasks | 7 files |
 | Phase 04-shopping-list P03 | 8 | 3 tasks | 3 files |
+| Phase 05-frontend-and-deployment P00 | 8 | 5 tasks | 6 files |
+| Phase 05-frontend-and-deployment P02 | 9min | 5 tasks | 15 files |
+| Phase 05-frontend-and-deployment P02 | 9 | 5 tasks | 15 files |
 
 ## Accumulated Context
 
@@ -104,6 +107,11 @@ Recent decisions affecting current work:
 - [04-02]: ShoppingListsPublic excludes items for performance, ShoppingListPublic includes them
 - [Phase 04-shopping-list]: Use per-list WebSocket rooms for targeted real-time updates
 - [Phase 04-shopping-list]: Token-based sharing with 7-day expiration for simple, revocable access
+- [05-00]: Use vitest/config import instead of vite reference directive
+- [05-00]: Path alias @ resolves to ./src using path.resolve
+- [05-00]: E2E tests verify file existence before Dockerfile creation
+- [Phase 05-02]: Use URLSearchParams for query string building (order-independent in tests)
+- [Phase 05-02]: Create minimal App.tsx with QueryClientProvider instead of full prototype
 
 ### Pending Todos
 
@@ -122,6 +130,6 @@ From research SUMMARY.md - Phase 3 and Phase 4 flags:
 
 ## Session Continuity
 
-Last session: 2026-03-04
-Stopped at: Phase 4 in progress (2/3 plans complete)
-Resume file: .planning/phases/04-shopping-list/04-03-PLAN.md
+Last session: 2026-03-04T15:42:13.925Z
+Stopped at: Completed 05-02 Frontend API Integration
+Resume file: None
