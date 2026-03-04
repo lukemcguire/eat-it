@@ -118,8 +118,8 @@ them with household members for collaborative grocery shopping.
      creating an account
 **Plans**: 3 plans
 
-- [ ] 04-01-PLAN.md - Store sections model and ingredient combining service
-- [ ] 04-02-PLAN.md - Shopping list CRUD and generate endpoint
+- [x] 04-01-PLAN.md - Store sections model and ingredient combining service
+- [x] 04-02-PLAN.md - Shopping list CRUD and generate endpoint
 - [ ] 04-03-PLAN.md - WebSocket sync and shareable links
 
 ### Phase 5: Frontend and Deployment
@@ -155,7 +155,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 1. Foundation and Data Layer | 4/4 | Complete | 2026-02-25 |
 | 2. Recipe Import and CRUD | 5/5 | Complete | 2026-02-25 |
 | 3. Semantic Search | 3/3 | Complete | 2026-03-04 |
-| 4. Shopping List | 0/3 | Not started | - |
+| 4. Shopping List | 2/3 | In Progress | - |
 | 5. Frontend and Deployment | 0/4 | Not started | - |
 
 ---

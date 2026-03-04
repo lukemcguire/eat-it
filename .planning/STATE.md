@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: ready
-stopped_at: Phase 4 ready to start
-last_updated: "2026-03-04T09:00:00.000Z"
-last_activity: 2026-03-04 — Completed Phase 3 Semantic Search
+status: in_progress
+stopped_at: Phase 4 in progress (2/3 plans complete)
+last_updated: "2026-03-04T10:30:39.518Z"
+last_activity: 2026-03-04 — Completed 04-02 Shopping List CRUD API
 progress:
   total_phases: 5
   completed_phases: 3
   total_plans: 19
-  completed_plans: 12
-  percent: 63
+  completed_plans: 14
+  percent: 74
 ---
 
 # Project State
@@ -23,23 +23,23 @@ See: .planning/PROJECT.md (updated 2026-02-23)
 **Core value:** All your recipes and shopping lists live on your own hardware,
 searchable in plain English, with no ads, no accounts required, and no data
 leaving your network.
-**Current focus:** Phase 4 (Shopping List) - Ready to start
+**Current focus:** Phase 4 (Shopping List) - In Progress
 
 ## Current Position
 
-Phase: 4 of 5 (Shopping List) - READY
-Plan: 0 of 3 in current phase
-Status: Phase 4 ready to start
-Last activity: 2026-03-04 — Completed Phase 3 Semantic Search
+Phase: 4 of 5 (Shopping List) - IN PROGRESS
+Plan: 2 of 3 in current phase
+Status: Completed 04-02 Shopping List CRUD API
+Last activity: 2026-03-04 — Completed 04-02 Shopping List CRUD API
 
-Progress: [=====---] 63%
+Progress: [██████░░░░] 74%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 12
+- Total plans completed: 14
 - Average duration: 13 min
-- Total execution time: 2.40 hours
+- Total execution time: 3.0 hours
 
 **By Phase:**
 
@@ -48,14 +48,16 @@ Progress: [=====---] 63%
 | 1. Foundation | 4 | 95min | 24min |
 | 2. Recipe Import | 5 | 39min | 8min |
 | 3. Semantic Search | 3 | 15min | 5min |
-| 4. Shopping List | 0 | TBD | - |
+| 4. Shopping List | 2 | 12min | 6min |
 | 5. Frontend/Deploy | 0 | TBD | - |
 
 **Recent Trend:**
-- Last 5 plans: 02-04 (12min), 02-05 (2min), 03-01 (5min), 03-02 (5min), 03-03 (5min)
-- Trend: Phase 3 complete, Phase 4 ready
+- Last 5 plans: 03-01 (5min), 03-02 (5min), 03-03 (5min), 04-01 (7min), 04-02 (5min)
+- Trend: Phase 4 in progress (2/3 plans)
 
 *Updated after each plan completion*
+| Phase 04-shopping-list P01 | 5 | - tasks | 7 files |
+| Phase 04-shopping-list P03 | 8 | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -97,6 +99,11 @@ Recent decisions affecting current work:
 - [03-02]: Set embedding_model=None in conftest client for existing tests
 - [03-03]: Use cursor pattern for raw DB access (close cursor, not connection)
 - [03-03]: Distance threshold of 1.5 for semantic relevance filtering
+- [04-02]: Shopping list items ordered by section sort_order then display_order
+- [04-02]: Invalid recipe IDs silently skipped in generate endpoint (graceful degradation)
+- [04-02]: ShoppingListsPublic excludes items for performance, ShoppingListPublic includes them
+- [Phase 04-shopping-list]: Use per-list WebSocket rooms for targeted real-time updates
+- [Phase 04-shopping-list]: Token-based sharing with 7-day expiration for simple, revocable access
 
 ### Pending Todos
 
@@ -116,5 +123,5 @@ From research SUMMARY.md - Phase 3 and Phase 4 flags:
 ## Session Continuity
 
 Last session: 2026-03-04
-Stopped at: Phase 3 complete
-Resume file: .planning/phases/04-shopping-list/04-01-PLAN.md
+Stopped at: Phase 4 in progress (2/3 plans complete)
+Resume file: .planning/phases/04-shopping-list/04-03-PLAN.md

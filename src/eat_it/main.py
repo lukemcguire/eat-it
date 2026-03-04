@@ -11,6 +11,7 @@ from eat_it.database import get_session, init_db
 from eat_it.routers.health import router as health_router
 from eat_it.routers.recipes import router as recipes_router
 from eat_it.routers.search import router as search_router
+from eat_it.routers.shopping_lists import router as shopping_lists_router
 from eat_it.services.importer_registry import ImporterRegistry
 
 logger = logging.getLogger(__name__)
@@ -73,6 +74,7 @@ app = FastAPI(
 app.include_router(health_router)
 app.include_router(recipes_router, prefix="/recipes")
 app.include_router(search_router, tags=["search"])
+app.include_router(shopping_lists_router, prefix="/shopping-lists")
 
 # Expose session dependency for routes
 __all__ = ["app", "get_session"]

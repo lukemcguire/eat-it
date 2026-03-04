@@ -3,6 +3,7 @@
 from eat_it.models.recipe import Ingredient, IngredientGroup, Recipe
 from eat_it.models.settings import Settings
 from eat_it.models.shopping_list import ShoppingList, ShoppingListItem
+from eat_it.models.store_section import StoreSection
 
 __all__ = [
     "Ingredient",
@@ -11,4 +12,5 @@ __all__ = [
     "Settings",
     "ShoppingList",
     "ShoppingListItem",
+    "StoreSection",
 ]

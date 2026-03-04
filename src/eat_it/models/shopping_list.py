@@ -20,6 +20,8 @@ class ShoppingListItem(SQLModel, table=True):
         quantity: Optional quantity.
         unit: Optional unit of measurement.
         checked: Whether item has been checked off.
+        section_id: Foreign key to store section for organization.
+        display_order: Order for manual reordering within section.
         created_at: Creation timestamp.
         updated_at: Last update timestamp.
 
@@ -33,6 +35,8 @@ class ShoppingListItem(SQLModel, table=True):
     quantity: Optional[float] = None
     unit: Optional[str] = None
     checked: bool = False
+    section_id: Optional[int] = Field(default=None, foreign_key="store_sections.id")
+    display_order: Optional[int] = None
 
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
@@ -45,6 +49,7 @@ class ShoppingList(SQLModel, table=True):
         id: Primary key.
         name: List name.
         share_token: Token for sharing via link/PIN.
+        expires_at: Optional expiration time for share token.
         metadata_: Versioned metadata for plugin extensibility.
         created_at: Creation timestamp.
         updated_at: Last update timestamp.
@@ -56,6 +61,7 @@ class ShoppingList(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
     share_token: Optional[str] = None  # For sharing via link/PIN
+    expires_at: Optional[datetime] = None  # Share token expiration
 
     # Versioned metadata for plugin extensibility (ARCH-03)
     # Structure: {"version": 1, "data": {...plugin-specific data...}}
