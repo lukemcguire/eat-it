@@ -10,11 +10,16 @@ Provides RESTful endpoints for shopping list management:
 - PATCH /shopping-lists/{list_id}/items/{item_id} - Update item
 - DELETE /shopping-lists/{list_id}/items/{item_id} - Remove item
 - POST /shopping-lists/generate - Generate list from recipes
+- WebSocket /shopping-lists/ws/{list_id} - Real-time updates
+- POST /shopping-lists/{list_id}/share - Generate share token
+- GET /shopping-lists/shared/{token} - Access shared list
 """
 
+import secrets
+from datetime import datetime, timedelta
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect, status
 from sqlmodel import Session, col, select
 
 from eat_it.database import get_session
@@ -33,6 +38,7 @@ from eat_it.schemas.shopping_list import (
 )
 from eat_it.services.ingredient_combiner import combine_ingredients
 from eat_it.services.section_categorizer import categorize_ingredient, get_or_create_section_id
+from eat_it.websocket.manager import manager as ws_manager
 
 router = APIRouter(tags=["shopping-lists"])
 
@@ -284,7 +290,7 @@ def add_shopping_list_item(
     response_model=ShoppingListItemPublic,
     summary="Update shopping list item",
 )
-def update_shopping_list_item(
+async def update_shopping_list_item(
     *,
     session: Session = Depends(get_session),
     list_id: int,
@@ -293,7 +299,8 @@ def update_shopping_list_item(
 ) -> ShoppingListItem:
     """Update a shopping list item with partial data.
 
-    Only provided fields will be updated.
+    Only provided fields will be updated. Broadcasts changes to
+    connected WebSocket clients.
 
     Args:
         session: Database session from dependency injection.
@@ -323,9 +330,17 @@ def update_shopping_list_item(
 
     update_data = data.model_dump(exclude_unset=True)
     db_item.sqlmodel_update(update_data)
+    db_item.updated_at = datetime.utcnow()
     session.add(db_item)
     session.commit()
     session.refresh(db_item)
+
+    # Broadcast update to all connected clients
+    await ws_manager.broadcast_to_list(
+        list_id,
+        {"type": "item_updated", "item": db_item.model_dump()}
+    )
+
     return db_item
 
 
@@ -334,13 +349,15 @@ def update_shopping_list_item(
     status_code=status.HTTP_204_NO_CONTENT,
     summary="Remove item from shopping list",
 )
-def delete_shopping_list_item(
+async def delete_shopping_list_item(
     *,
     session: Session = Depends(get_session),
     list_id: int,
     item_id: int,
 ) -> None:
     """Remove an item from a shopping list.
+
+    Broadcasts deletion to connected WebSocket clients.
 
     Args:
         session: Database session from dependency injection.
@@ -366,6 +383,12 @@ def delete_shopping_list_item(
 
     session.delete(db_item)
     session.commit()
+
+    # Broadcast deletion to all connected clients
+    await ws_manager.broadcast_to_list(
+        list_id,
+        {"type": "item_deleted", "item_id": item_id}
+    )
 
 
 # ─── Generate Endpoint ───────────────────────────────────────────────────
@@ -459,4 +482,146 @@ def generate_shopping_list(
         items=[ShoppingListItemPublic.model_validate(item) for item in items],
         created_at=db_list.created_at,
         updated_at=db_list.updated_at,
+    )
+
+
+# ─── WebSocket Endpoint ───────────────────────────────────────────────────
+
+
+@router.websocket("/ws/{list_id}")
+async def websocket_shopping_list(
+    websocket: WebSocket,
+    list_id: int,
+    session: Session = Depends(get_session)
+):
+    """WebSocket endpoint for real-time shopping list updates.
+
+    Clients connect to receive instant updates when items change.
+    Protocol:
+    - Server sends: {"type": "item_updated", "item": {...}}
+    - Server sends: {"type": "item_deleted", "item_id": 123}
+    - Server sends: {"type": "list_updated", "list": {...}}
+    - Client sends: {"type": "ping"} -> Server responds with {"type": "pong"}
+    """
+    # Verify list exists
+    db_list = session.get(ShoppingList, list_id)
+    if not db_list:
+        await websocket.close(code=4004, reason="List not found")
+        return
+
+    await ws_manager.connect(list_id, websocket)
+    try:
+        while True:
+            data = await websocket.receive_json()
+            if data.get("type") == "ping":
+                await websocket.send_json({"type": "pong"})
+    except WebSocketDisconnect:
+        ws_manager.disconnect(list_id, websocket)
+    except Exception:
+        ws_manager.disconnect(list_id, websocket)
+
+
+# ─── Share Endpoints ───────────────────────────────────────────────────────
+
+
+@router.post("/{list_id}/share", response_model=dict)
+def generate_share_token(
+    list_id: int,
+    session: Session = Depends(get_session)
+):
+    """Generate or refresh share token for a shopping list.
+
+    Returns a URL-safe token that can be shared with others.
+    Token expires after 7 days.
+    """
+    db_list = session.get(ShoppingList, list_id)
+    if not db_list:
+        raise HTTPException(status_code=404, detail="List not found")
+
+    # Generate new token (12 chars, URL-safe)
+    db_list.share_token = secrets.token_urlsafe(9)
+    db_list.expires_at = datetime.utcnow() + timedelta(days=7)
+    session.add(db_list)
+    session.commit()
+    session.refresh(db_list)
+
+    return {
+        "share_token": db_list.share_token,
+        "expires_at": db_list.expires_at,
+        "share_url": f"/shared/{db_list.share_token}"
+    }
+
+
+@router.get("/shared/{token}", response_model=ShoppingListPublic)
+def get_shared_list(
+    token: str,
+    session: Session = Depends(get_session)
+):
+    """Access a shopping list via share token.
+
+    Returns the list if token is valid and not expired.
+    """
+    db_list = session.exec(
+        select(ShoppingList).where(ShoppingList.share_token == token)
+    ).first()
+
+    if not db_list:
+        raise HTTPException(status_code=404, detail="List not found")
+
+    if db_list.expires_at and db_list.expires_at < datetime.utcnow():
+        raise HTTPException(status_code=410, detail="Share link has expired")
+
+    # Fetch items ordered by section sort_order then display_order
+    items = session.exec(
+        select(ShoppingListItem)
+        .where(ShoppingListItem.shopping_list_id == db_list.id)
+        .join(StoreSection, isouter=True)
+        .order_by(
+            col(StoreSection.sort_order).asc(),
+            col(ShoppingListItem.display_order).asc(),
+        )
+    ).all()
+
+    # Build response with ordered items
+    return ShoppingListPublic(
+        id=db_list.id,
+        name=db_list.name,
+        share_token=db_list.share_token,
+        expires_at=db_list.expires_at,
+        items=[ShoppingListItemPublic.model_validate(item) for item in items],
+        created_at=db_list.created_at,
+        updated_at=db_list.updated_at,
+    )
+
+
+# ─── Completed Items Endpoint ─────────────────────────────────────────────
+
+
+@router.delete("/{list_id}/completed", status_code=status.HTTP_204_NO_CONTENT)
+async def clear_completed_items(
+    list_id: int,
+    session: Session = Depends(get_session)
+):
+    """Remove all checked items from a shopping list."""
+    db_list = session.get(ShoppingList, list_id)
+    if not db_list:
+        raise HTTPException(status_code=404, detail="List not found")
+
+    # Delete all checked items
+    checked_items = session.exec(
+        select(ShoppingListItem).where(
+            ShoppingListItem.shopping_list_id == list_id,
+            ShoppingListItem.checked == True  # noqa: E712
+        )
+    ).all()
+
+    for item in checked_items:
+        session.delete(item)
+
+    session.commit()
+
+    # Broadcast update
+    await ws_manager.broadcast_to_list(
+        list_id,
+        {"type": "completed_cleared"}
     )
