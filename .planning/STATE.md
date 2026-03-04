@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 04.1-01 Model and Schemas
-last_updated: "2026-03-04T20:15:30.366Z"
-last_activity: 2026-03-04 — Completed 04.1-01 Model and Schemas
+stopped_at: Completed 04.1-03 Ingredient Tests
+last_updated: "2026-03-04T20:23:30Z"
+last_activity: 2026-03-04 — Completed 04.1-03 Ingredient Tests
 progress:
   total_phases: 6
   completed_phases: 5
@@ -28,9 +28,9 @@ leaving your network.
 ## Current Position
 
 Phase: 04.1 of 04.1 (Recipe Ingredient Management) - IN PROGRESS
-Plan: 2 of 4 in current phase
-Status: Completed 04.1-02 Ingredient Router CRUD Endpoints
-Last activity: 2026-03-04 — Completed 04.1-02 Ingredient Router CRUD Endpoints
+Plan: 3 of 4 in current phase
+Status: Completed 04.1-03 Ingredient Tests
+Last activity: 2026-03-04 — Completed 04.1-03 Ingredient Tests
 
 Progress: [██████████] 100%
 
@@ -61,6 +61,7 @@ Progress: [██████████] 100%
 | Phase 05-frontend-and-deployment P03 | 5min | 4 tasks | 9 files |
 | Phase 05-frontend-and-deployment P04 | 4min | 2 tasks | 4 files |
 | Phase 04.1 P02 | 2min | 2 tasks | 3 files |
+| Phase 04.1 P03 | 6min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -125,6 +126,8 @@ Recent decisions affecting current work:
 - [04.1-02]: Default group name is "Ingredients" when auto-creating
 - [04.1-02]: Empty groups auto-deleted when all ingredients removed
 - [04.1-02]: Bulk replace operations are all-or-nothing (single transaction)
+- [04.1-03]: Separate input schemas for bulk request payload (IngredientBulkItem, IngredientGroupBulkItem)
+- [04.1-03]: Track newly created ingredient IDs in bulk replace to prevent immediate deletion
 
 ### Roadmap Evolution
 
@@ -147,6 +150,6 @@ From research SUMMARY.md - Phase 3 and Phase 4 flags:
 
 ## Session Continuity
 
-Last session: 2026-03-04T20:14:45Z
-Stopped at: Completed 04.1-02 Ingredient Router CRUD Endpoints
-Resume file: .planning/phases/04.1-recipe-ingredient-management-crud-endpoints-for-ingredient-groups-and-ingredients/04.1-03-PLAN.md
+Last session: 2026-03-04T20:23:30Z
+Stopped at: Completed 04.1-03 Ingredient Tests
+Resume file: .planning/phases/04.1-recipe-ingredient-management-crud-endpoints-for-ingredient-groups-and-ingredients/04.1-04-PLAN.md
