@@ -101,10 +101,38 @@ class IngredientPublic(IngredientBase):
 class IngredientGroupWithIngredients(IngredientGroupPublic):
     """Schema for ingredient group with nested ingredients.
 
-    Used for bulk operations that return the full structure.
+    Used for bulk operation responses.
     """
 
     ingredients: list[IngredientPublic] = Field(default_factory=list)
+
+
+class IngredientBulkItem(BaseModel):
+    """Schema for ingredient in bulk request payload.
+
+    id is optional - null for new ingredients, existing id for updates.
+    group_id not needed (derived from parent group).
+    """
+
+    id: Optional[int] = None
+    quantity: Optional[float] = None
+    unit: Optional[str] = None
+    name: str = Field(..., min_length=1, max_length=500)
+    preparation: Optional[str] = None
+    raw: str = Field(..., min_length=1)
+    display_order: int = Field(0, ge=0)
+
+
+class IngredientGroupBulkItem(BaseModel):
+    """Schema for ingredient group in bulk request payload.
+
+    id is optional - null for new groups, existing id for updates.
+    recipe_id not needed (derived from URL path).
+    """
+
+    id: Optional[int] = None
+    name: Optional[str] = None
+    ingredients: list[IngredientBulkItem] = Field(default_factory=list)
 
 
 class IngredientsBulkRequest(BaseModel):
@@ -115,7 +143,7 @@ class IngredientsBulkRequest(BaseModel):
     Groups/ingredients not in payload are deleted.
     """
 
-    groups: list[IngredientGroupWithIngredients]
+    groups: list[IngredientGroupBulkItem]
 
 
 class IngredientsBulkResponse(BaseModel):

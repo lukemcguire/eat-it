@@ -523,6 +523,8 @@ def bulk_replace_ingredients(
                     display_order=index,
                 )
                 session.add(db_ingredient)
+                session.flush()  # Get the new ingredient ID
+                payload_ingredient_ids.add(db_ingredient.id)
 
     # Delete ingredients not in payload (per-group)
     for existing_group in existing_groups:
