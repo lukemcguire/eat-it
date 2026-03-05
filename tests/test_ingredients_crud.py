@@ -248,6 +248,33 @@ class TestCreateIngredient:
         assert len(groups) == 1
         assert groups[0]["name"] == "Ingredients"
 
+    def test_create_ingredient_missing_group_id(
+        self, client: TestClient, test_session: Session
+    ) -> None:
+        """POST ingredient without group_id auto-creates default group."""
+        recipe = _create_recipe(test_session)
+
+        ingredient_data = {
+            # No group_id provided
+            "name": "Pepper",
+            "raw": "Pepper to taste",
+        }
+
+        response = client.post(
+            f"/recipes/{recipe.id}/ingredients", json=ingredient_data
+        )
+
+        assert response.status_code == 201
+        data = response.json()
+        # Should have created a default group
+        assert data["group_id"] is not None
+
+        # Verify the group was created with default name
+        groups_response = client.get(f"/recipes/{recipe.id}/groups")
+        groups = groups_response.json()
+        assert len(groups) == 1
+        assert groups[0]["name"] == "Ingredients"
+
     def test_create_ingredient_recipe_not_found(self, client: TestClient) -> None:
         """POST /recipes/999/ingredients returns 404."""
         response = client.post(

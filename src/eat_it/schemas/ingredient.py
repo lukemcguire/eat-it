@@ -61,10 +61,11 @@ class IngredientBase(BaseModel):
 class IngredientCreate(IngredientBase):
     """Schema for creating a new ingredient via POST.
 
-    group_id is required - every ingredient belongs to a group.
+    group_id is optional - if missing or invalid, a default "Ingredients"
+    group is auto-created.
     """
 
-    group_id: int
+    group_id: Optional[int] = None
 
 
 class IngredientUpdate(BaseModel):
