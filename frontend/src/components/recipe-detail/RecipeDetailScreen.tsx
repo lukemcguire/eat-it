@@ -1,19 +1,8 @@
 import React from 'react';
-import { recipeDetail, type Ingredient } from '../../data/mockData';
+import { useParams } from 'react-router-dom';
+import { recipeDetail } from '../../data/mockData';
 import { Icon, Button, Tag, StepNumber, Card } from '../ui';
-
-interface IngredientRowProps {
-  readonly ingredient: Ingredient;
-}
-
-const IngredientRow: React.FC<IngredientRowProps> = ({ ingredient }) => {
-  return (
-    <tr className="border-b border-border-dark last:border-0 hover:bg-surface-dark transition-colors">
-      <td className="p-4 text-slate-200 font-medium">{ingredient.name}</td>
-      <td className="p-4 text-right text-nordic-blue">{ingredient.quantity}</td>
-    </tr>
-  );
-};
+import { IngredientSection } from '../ingredients';
 
 interface InstructionStepProps {
   readonly number: number;
@@ -44,6 +33,9 @@ interface RecipeDetailScreenProps {
 export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({
   className = '',
 }) => {
+  const { id } = useParams<{ id: string }>();
+  const recipeId = parseInt(id ?? '0', 10);
+
   return (
     <div
       className={`relative flex h-auto min-h-screen w-full flex-col bg-background-dark overflow-x-hidden ${className}`}
@@ -145,23 +137,9 @@ export const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mt-8">
-          {/* Ingredients */}
+          {/* Ingredients - managed by IngredientSection */}
           <div className="lg:col-span-1">
-            <div className="flex items-center gap-3 mb-6">
-              <h2 className="text-2xl font-bold text-white tracking-tight">
-                Ingredients
-              </h2>
-              <div className="h-[2px] flex-1 bg-border-dark mt-1" />
-            </div>
-            <Card>
-              <table className="w-full text-left border-collapse">
-                <tbody className="divide-y divide-border-dark">
-                  {recipeDetail.ingredients.map((ingredient, idx) => (
-                    <IngredientRow key={idx} ingredient={ingredient} />
-                  ))}
-                </tbody>
-              </table>
-            </Card>
+            <IngredientSection recipeId={recipeId} />
           </div>
 
           {/* Instructions */}
