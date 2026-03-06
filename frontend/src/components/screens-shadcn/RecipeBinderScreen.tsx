@@ -1,7 +1,7 @@
 import React from "react";
 import { useRecipeBinder } from "@/hooks";
 import { type RecipeCard as RecipeCardType } from "@/data/mockData";
-import { Button, Card, CardContent, Input, Badge } from "@/components/shadcn";
+import { Button, Card, CardContent, Input } from "@/components/shadcn";
 import { cn } from "@/lib/utils";
 
 interface RecipeCardProps {
