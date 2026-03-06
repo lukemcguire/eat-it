@@ -1,7 +1,7 @@
 import React from "react";
 import { useShoppingList } from "@/hooks";
 import { shoppingListTabs, bottomNavItems } from "@/data/mockData";
-import { Button, Card, Checkbox, Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/shadcn";
+import { Button, Checkbox, Tabs, TabsList, TabsTrigger } from "@/components/shadcn";
 import { cn } from "@/lib/utils";
 
 interface ShoppingItemRowProps {
