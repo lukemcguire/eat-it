@@ -134,8 +134,8 @@ within recipes through RESTful CRUD endpoints with bulk operations support.
 
 Plans:
 - [x] 04.1-01-PLAN.md - Database schema and Pydantic schemas
-- [ ] 04.1-02-PLAN.md - CRUD endpoints and router registration
-- [ ] 04.1-03-PLAN.md - Tests and verification
+- [x] 04.1-02-PLAN.md - CRUD endpoints and router registration
+- [x] 04.1-03-PLAN.md - Tests and verification
 
 ### Phase 5: Frontend and Deployment
 **Goal**: Users can access the full application through a mobile-optimized
@@ -177,3 +177,18 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 04.1 -> 5
 ---
 *Roadmap created: 2026-02-23*
 *Depth: comprehensive*
+
+### Phase 05.1: Ingredient Management Frontend (INSERTED)
+
+**Goal:** Frontend interface for managing ingredient groups and individual
+ingredients within recipes. Users can view, create, edit, delete, and reorder
+ingredients and groups through a desktop-first editing experience.
+**Requirements**: ING-01, ING-02, ING-03, ING-04
+**Depends on:** Phase 5
+**Plans:** 4 plans in 4 waves
+
+Plans:
+- [ ] 05.1-01-PLAN.md - Types, hooks, and @dnd-kit setup (Wave 1)
+- [ ] 05.1-02-PLAN.md - Drag-and-drop components (Wave 2)
+- [ ] 05.1-03-PLAN.md - IngredientSection container with edit mode (Wave 3)
+- [ ] 05.1-04-PLAN.md - RecipeDetailScreen integration (Wave 4)
