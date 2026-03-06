@@ -19,7 +19,8 @@ your network.
 
 ### Validated
 
-(None yet — ship to validate)
+- ✓ App can be self-hosted via Docker with minimal setup — Phase 05 (multi-stage
+  build, static file serving, SPA fallback)
 
 ### Active
 
@@ -57,8 +58,6 @@ your network.
 
 **Data & Deployment**
 - [ ] User can export recipes and shopping lists as JSON or CSV
-- [ ] App can be self-hosted via Docker or a single binary with minimal
-  setup steps
 
 **Extensibility (Architecture)**
 - [ ] Recipe importers follow a provider/strategy pattern so new parsers
@@ -112,11 +111,12 @@ your network.
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Preview then save on import | Avoids polluting collection with bad parses; user confirms before committing | — Pending |
-| Local embeddings for search | Privacy-first; fully offline; no API keys; acceptable quality for recipe search | — Pending |
-| React + TS + Vite + Tailwind + shadcn/ui | Largest ecosystem, strong typing, component library accelerates mobile-first UI | — Pending |
-| SQLite for storage | Zero-config, file-based, runs on Raspberry Pi, sufficient for household scale | — Pending |
-| Provider pattern for importers | Enables future parsers (OCR, video) without touching core; extensibility from day one | — Pending |
+| Preview then save on import | Avoids polluting collection with bad parses; user confirms before committing | ✓ Confirmed — Phase 02 |
+| Local embeddings for search | Privacy-first; fully offline; no API keys; acceptable quality for recipe search | ✓ Confirmed — Phase 03 |
+| React + TS + Vite + Tailwind + shadcn/ui | Largest ecosystem, strong typing, component library accelerates mobile-first UI | ✓ Confirmed — Phase 05 |
+| SQLite for storage | Zero-config, file-based, runs on Raspberry Pi, sufficient for household scale | ✓ Confirmed — Phase 01 |
+| Provider pattern for importers | Enables future parsers (OCR, video) without touching core; extensibility from day one | ✓ Confirmed — Phase 02 |
+| Docker multi-stage build | Single image for backend+frontend, minimal final layer, SQLite persistence | ✓ Confirmed — Phase 05 |
 
 ---
-*Last updated: 2026-02-23 after initialization*
+*Last updated: 2026-03-06 after Milestone v1.0*
