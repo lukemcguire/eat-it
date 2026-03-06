@@ -185,7 +185,7 @@ ingredients within recipes. Users can view, create, edit, delete, and reorder
 ingredients and groups through a desktop-first editing experience.
 **Requirements**: ING-01, ING-02, ING-03, ING-04
 **Depends on:** Phase 5
-**Plans:** 3/4 plans executed
+**Plans:** 4/4 plans complete
 
 Plans:
 - [ ] 05.1-01-PLAN.md - Types, hooks, and @dnd-kit setup (Wave 1)
