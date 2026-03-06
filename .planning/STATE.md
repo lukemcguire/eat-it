@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 05.1-01 Ingredient Data Layer
-last_updated: "2026-03-06T02:13:35.537Z"
-last_activity: 2026-03-06 — Completed 05.1-01 Ingredient Data Layer
+stopped_at: Completed 05.1-02 Drag-and-Drop Components
+last_updated: "2026-03-06T02:18:27Z"
+last_activity: 2026-03-06 — Completed 05.1-02 Drag-and-Drop Components
 progress:
   total_phases: 7
   completed_phases: 6
   total_plans: 27
-  completed_plans: 24
+  completed_plans: 25
   percent: 100
 ---
 
@@ -28,18 +28,18 @@ leaving your network.
 ## Current Position
 
 Phase: 05.1 of 05.1 (Ingredient Management Frontend) - IN PROGRESS
-Plan: 1 of 3 in current phase
-Status: Completed 05.1-01 Ingredient Data Layer
-Last activity: 2026-03-06 — Completed 05.1-01 Ingredient Data Layer
+Plan: 2 of 3 in current phase
+Status: Completed 05.1-02 Drag-and-Drop Components
+Last activity: 2026-03-06 — Completed 05.1-02 Drag-and-Drop Components
 
 Progress: [██████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 20
+- Total plans completed: 21
 - Average duration: 13 min
-- Total execution time: 3.4 hours
+- Total execution time: 3.5 hours
 
 **By Phase:**
 
@@ -63,6 +63,7 @@ Progress: [██████████] 100%
 | Phase 04.1 P02 | 2min | 2 tasks | 3 files |
 | Phase 04.1 P03 | 6min | 2 tasks | 3 files |
 | Phase 05.1 P01 | 3min | 3 tasks | 3 files |
+| Phase 05.1 P02 | 3min | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -131,6 +132,9 @@ Recent decisions affecting current work:
 - [04.1-03]: Track newly created ingredient IDs in bulk replace to prevent immediate deletion
 - [Phase 05.1]: Use bulk replace only for ingredient editing (no individual CRUD hooks)
 - [Phase 05.1]: Invalidate both ingredient-groups and recipe queries on bulk replace
+- [05.1-02]: Use forwardRef in DragHandle and IngredientRow for sortable integration
+- [05.1-02]: Show DragHandle only in edit mode via conditional rendering
+- [05.1-02]: Apply 0.5 opacity during drag for visual feedback
 
 ### Roadmap Evolution
 
@@ -154,6 +158,6 @@ From research SUMMARY.md - Phase 3 and Phase 4 flags:
 
 ## Session Continuity
 
-Last session: 2026-03-06T02:11:40Z
-Stopped at: Completed 05.1-01 Ingredient Data Layer
-Resume file: .planning/phases/05.1-ingredient-management-frontend/05.1-02-PLAN.md
+Last session: 2026-03-06T02:18:27Z
+Stopped at: Completed 05.1-02 Drag-and-Drop Components
+Resume file: .planning/phases/05.1-ingredient-management-frontend/05.1-03-PLAN.md
