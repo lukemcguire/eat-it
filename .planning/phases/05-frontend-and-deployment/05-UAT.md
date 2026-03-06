@@ -1,5 +1,5 @@
 ---
-status: complete
+status: diagnosed
 phase: 05-frontend-and-deployment
 source: [05-00-SUMMARY.md, 05-01-SUMMARY.md, 05-02-SUMMARY.md, 05-03-SUMMARY.md, 05-04-SUMMARY.md]
 started: 2026-03-05T10:00:00Z
@@ -80,13 +80,37 @@ skipped: 2
   reason: "User reported: Multiple build failures: (1) OSError: README.md not copied before pip install, (2) TypeScript compilation errors: missing Icon/IconButton exports from ./ui, ImportMeta.env type missing, unused variable errors"
   severity: blocker
   test: 2
-  artifacts: []
-  missing: []
+  root_cause: |
+    **Issue 1 - Wrong export in index.ts**: File `frontend/src/components/ui/index.ts` exports `IconButton` from `./IconButton` but that file only exports `Icon`. The file is misnamed - it should be `Icon.tsx` or the export should be `Icon` not `IconButton`.
+
+    **Issue 2 - Missing vite-env.d.ts**: TypeScript doesn't recognize `import.meta.env` because `frontend/src/vite-env.d.ts` doesn't exist. Vite requires this type declaration file for environment variables.
+
+    **Issue 3 - Unused variable warnings**: TypeScript's `noUnusedLocals`/`noUnusedParameters` flags are on, causing build failure on unused imports like `StepNumber` in RecipeImportScreen.tsx.
+  artifacts:
+    - path: "frontend/src/components/ui/index.ts"
+      issue: "Exports non-existent IconButton instead of Icon"
+    - path: "frontend/src/vite-env.d.ts"
+      issue: "Missing file for Vite type declarations"
+    - path: "frontend/src/components/ui/IconButton.tsx"
+      issue: "File should be named Icon.tsx or export renamed to Icon"
+  missing:
+    - "Add `export { Icon } from './IconButton';` to index.ts OR rename IconButton.tsx to Icon.tsx"
+    - "Create frontend/src/vite-env.d.ts with `/// <reference types=\"vite/client\" />`"
+    - "Remove unused imports from screen components or fix the imports"
 
 - truth: "Frontend loads at http://localhost:8000 showing app shell with Eat It branding"
   status: failed
   reason: "User reported: Returns JSON 404 {\"detail\": \"Not found\"} - SPA fallback not serving frontend in dev mode"
   severity: blocker
   test: 4
-  artifacts: []
-  missing: []
+  root_cause: |
+    **Design Gap (Not a Bug)**: The SPA fallback in `src/eat_it/main.py` is intentionally designed to only serve the frontend when `static/` directory exists (production mode). In development, the intended workflow is to use Vite's dev server (port 5173) with API proxy to FastAPI backend.
+
+    The vite.config.ts correctly proxies `/recipes` and `/shopping-lists` to `http://localhost:8000`. This is the expected development pattern - NOT a bug.
+  artifacts:
+    - path: "src/eat_it/main.py"
+      issue: "SPA fallback correctly only activates in production mode"
+  missing:
+    - "For dev workflow: Run `cd frontend && pnpm dev` separately from FastAPI"
+    - "For production: Build frontend first, then Docker will serve it"
+  design_note: "This is working as designed. Dev workflow uses Vite dev server, production uses FastAPI static files."
