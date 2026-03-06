@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react';
 import {
   shoppingListSections,
   type ShoppingSection,
-  type ShoppingItem,
 } from '../data/mockData';
 
 export interface UseShoppingListReturn {
