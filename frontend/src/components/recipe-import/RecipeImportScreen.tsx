@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRecipeImport } from '../../hooks';
-import { Icon, Button, Input, Tag, StepNumber, Card } from '../ui';
+import { Icon, Button, Input, Tag, Card } from '../ui';
 
 interface ImportStepProps {
   readonly number: number;
