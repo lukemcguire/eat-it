@@ -45,7 +45,6 @@ interface ShoppingSectionProps {
 }
 
 const ShoppingSection: React.FC<ShoppingSectionProps> = ({
-  id,
   title,
   items,
   onToggleItem,
