@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Phase 05.1 context gathered
-last_updated: "2026-03-06T00:11:59.618Z"
-last_activity: 2026-03-04 — Completed 04.1-03 Ingredient Tests
+stopped_at: Completed 05.1-01 Ingredient Data Layer
+last_updated: "2026-03-06T02:13:35.537Z"
+last_activity: 2026-03-06 — Completed 05.1-01 Ingredient Data Layer
 progress:
   total_phases: 7
   completed_phases: 6
-  total_plans: 23
-  completed_plans: 23
+  total_plans: 27
+  completed_plans: 24
   percent: 100
 ---
 
@@ -23,14 +23,14 @@ See: .planning/PROJECT.md (updated 2026-02-23)
 **Core value:** All your recipes and shopping lists live on your own hardware,
 searchable in plain English, with no ads, no accounts required, and no data
 leaving your network.
-**Current focus:** Phase 04.1 (Recipe Ingredient Management) - In Progress
+**Current focus:** Phase 05.1 (Ingredient Management Frontend) - In Progress
 
 ## Current Position
 
-Phase: 04.1 of 04.1 (Recipe Ingredient Management) - IN PROGRESS
-Plan: 3 of 4 in current phase
-Status: Completed 04.1-03 Ingredient Tests
-Last activity: 2026-03-04 — Completed 04.1-03 Ingredient Tests
+Phase: 05.1 of 05.1 (Ingredient Management Frontend) - IN PROGRESS
+Plan: 1 of 3 in current phase
+Status: Completed 05.1-01 Ingredient Data Layer
+Last activity: 2026-03-06 — Completed 05.1-01 Ingredient Data Layer
 
 Progress: [██████████] 100%
 
@@ -62,6 +62,7 @@ Progress: [██████████] 100%
 | Phase 05-frontend-and-deployment P04 | 4min | 2 tasks | 4 files |
 | Phase 04.1 P02 | 2min | 2 tasks | 3 files |
 | Phase 04.1 P03 | 6min | 2 tasks | 3 files |
+| Phase 05.1 P01 | 3min | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -128,6 +129,8 @@ Recent decisions affecting current work:
 - [04.1-02]: Bulk replace operations are all-or-nothing (single transaction)
 - [04.1-03]: Separate input schemas for bulk request payload (IngredientBulkItem, IngredientGroupBulkItem)
 - [04.1-03]: Track newly created ingredient IDs in bulk replace to prevent immediate deletion
+- [Phase 05.1]: Use bulk replace only for ingredient editing (no individual CRUD hooks)
+- [Phase 05.1]: Invalidate both ingredient-groups and recipe queries on bulk replace
 
 ### Roadmap Evolution
 
@@ -151,6 +154,6 @@ From research SUMMARY.md - Phase 3 and Phase 4 flags:
 
 ## Session Continuity
 
-Last session: 2026-03-06T00:11:59.589Z
-Stopped at: Phase 05.1 context gathered
-Resume file: .planning/phases/05.1-ingredient-management-frontend/05.1-CONTEXT.md
+Last session: 2026-03-06T02:11:40Z
+Stopped at: Completed 05.1-01 Ingredient Data Layer
+Resume file: .planning/phases/05.1-ingredient-management-frontend/05.1-02-PLAN.md
