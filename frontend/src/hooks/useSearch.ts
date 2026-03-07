@@ -9,3 +9,4 @@ export function useSearch(query: string, enabled: boolean = true) {
       apiClient<Recipe[]>(`/search?q=${encodeURIComponent(query)}`),
     enabled: enabled && query.trim().length > 0,
   });
+}
