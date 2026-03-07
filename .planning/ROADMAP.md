@@ -163,7 +163,7 @@ web interface and deploy it via Docker with minimal setup.
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 04.1 -> 5
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 04.1 -> 5 -> 05.1 -> 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -173,6 +173,23 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 04.1 -> 5
 | 4. Shopping List | 3/3 | Complete | 2026-03-04 |
 | 04.1. Recipe Ingredient Management | 3/3 | Complete    | 2026-03-04 |
 | 5. Frontend and Deployment | 4/4 | Complete | 2026-03-04 |
+| 05.1. Ingredient Management Frontend | 7/7 | Complete | 2026-03-06 |
+| 6. Frontend Integration | 0/4 | Planned | - |
+
+### Phase 6: Frontend Integration - Wire up real screen components in App.tsx, add missing routes, and connect hooks to backend API
+
+**Goal:** Connect Stitch-generated screen components to real backend APIs,
+implementing modal-based recipe detail, toast notifications, and semantic
+search functionality.
+**Requirements**: N/A (integration phase)
+**Depends on:** Phase 5, Phase 05.1
+**Plans:** 4 plans
+
+Plans:
+- [ ] 06-01-PLAN.md - Routes and toast infrastructure (Wave 1)
+- [ ] 06-02-PLAN.md - API hooks migration - shopping list and search (Wave 1)
+- [ ] 06-03-PLAN.md - Screen integration and modal pattern (Wave 2)
+- [ ] 06-04-PLAN.md - Search screen and final verification (Wave 3)
 
 ---
 *Roadmap created: 2026-02-23*
@@ -188,7 +205,7 @@ ingredients and groups through a desktop-first editing experience.
 **Plans:** 7/7 plans complete
 
 Plans:
-- [ ] 05.1-01-PLAN.md - Types, hooks, and @dnd-kit setup (Wave 1)
-- [ ] 05.1-02-PLAN.md - Drag-and-drop components (Wave 2)
-- [ ] 05.1-03-PLAN.md - IngredientSection container with edit mode (Wave 3)
-- [ ] 05.1-04-PLAN.md - RecipeDetailScreen integration (Wave 4)
+- [x] 05.1-01-PLAN.md - Types, hooks, and @dnd-kit setup (Wave 1)
+- [x] 05.1-02-PLAN.md - Drag-and-drop components (Wave 2)
+- [x] 05.1-03-PLAN.md - IngredientSection container with edit mode (Wave 3)
+- [x] 05.1-04-PLAN.md - RecipeDetailScreen integration (Wave 4)
