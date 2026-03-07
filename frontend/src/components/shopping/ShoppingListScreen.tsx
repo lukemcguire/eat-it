@@ -1,18 +1,20 @@
-import React from 'react';
-import { useShoppingList } from '../../hooks';
-import { shoppingListTabs, bottomNavItems } from '../../data/mockData';
+import React, { useState, useMemo } from 'react';
+import {
+  useShoppingList,
+  useUpdateShoppingListItem,
+  useStoreSections,
+} from '../../hooks';
+import { bottomNavItems } from '../../data/mockData';
 import { Icon, Button } from '../ui';
+import type { ShoppingListItem as ShoppingListItemType } from '@/types/shopping';
 
 interface ShoppingItemRowProps {
-  readonly id: string;
-  readonly name: string;
-  readonly checked: boolean;
+  readonly item: ShoppingListItemType;
   readonly onToggle: () => void;
 }
 
 const ShoppingItemRow: React.FC<ShoppingItemRowProps> = ({
-  name,
-  checked,
+  item,
   onToggle,
 }) => {
   return (
@@ -20,16 +22,16 @@ const ShoppingItemRow: React.FC<ShoppingItemRowProps> = ({
       <label className="flex flex-1 items-center gap-4 cursor-pointer">
         <input
           type="checkbox"
-          checked={checked}
+          checked={item.checked}
           onChange={onToggle}
           className="h-6 w-6 rounded border-slate-300 dark:border-border-dark bg-transparent text-primary focus:ring-primary focus:ring-offset-0"
         />
         <p
           className={`text-base font-medium ${
-            checked ? 'line-through opacity-50' : ''
+            item.checked ? 'line-through opacity-50' : ''
           }`}
         >
-          {name}
+          {item.name}
         </p>
       </label>
       <Icon name="drag_indicator" className="text-slate-400 cursor-grab" />
@@ -38,10 +40,9 @@ const ShoppingItemRow: React.FC<ShoppingItemRowProps> = ({
 };
 
 interface ShoppingSectionProps {
-  readonly id: string;
   readonly title: string;
-  readonly items: readonly { id: string; name: string; checked: boolean }[];
-  readonly onToggleItem: (itemId: string) => void;
+  readonly items: ShoppingListItemType[];
+  readonly onToggleItem: (itemId: number) => void;
 }
 
 const ShoppingSection: React.FC<ShoppingSectionProps> = ({
@@ -63,7 +64,7 @@ const ShoppingSection: React.FC<ShoppingSectionProps> = ({
         {items.map((item) => (
           <ShoppingItemRow
             key={item.id}
-            {...item}
+            item={item}
             onToggle={() => onToggleItem(item.id)}
           />
         ))}
@@ -74,98 +75,144 @@ const ShoppingSection: React.FC<ShoppingSectionProps> = ({
 
 interface ShoppingListScreenProps {
   readonly className?: string;
+  readonly listId?: number;
 }
 
 export const ShoppingListScreen: React.FC<ShoppingListScreenProps> = ({
   className = '',
+  listId = 1,
 }) => {
-  const { sections, toggleItem, activeTab, setActiveTab } = useShoppingList();
+  const [activeTab, setActiveTab] = useState('My List');
+  const { data: shoppingList, isLoading } = useShoppingList(listId);
+  const { data: sectionsData } = useStoreSections();
+  const updateItem = useUpdateShoppingListItem();
+
+  // Group items by section
+  const sections = useMemo(() => {
+    if (!shoppingList?.items || !sectionsData?.data) {
+      return [];
+    }
+
+    const sectionMap = new Map<number, string>();
+    sectionsData.data.forEach((section) => {
+      sectionMap.set(section.id, section.name);
+    });
+
+    const grouped = new Map<string, ShoppingListItemType[]>();
+    shoppingList.items.forEach((item) => {
+      const sectionName = item.section_id
+        ? sectionMap.get(item.section_id) || 'Other'
+        : 'Other';
+      const items = grouped.get(sectionName) || [];
+      items.push(item);
+      grouped.set(sectionName, items);
+    });
+
+    return Array.from(grouped.entries()).map(([title, items]) => ({
+      title,
+      items,
+    }));
+  }, [shoppingList?.items, sectionsData?.data]);
+
+  const handleToggleItem = (itemId: number) => {
+    const item = shoppingList?.items.find((i) => i.id === itemId);
+    if (item) {
+      updateItem.mutate({
+        listId,
+        itemId,
+        data: { checked: !item.checked },
+      });
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className={`flex h-screen items-center justify-center ${className}`}>
+        <p className="text-slate-400">Loading...</p>
+      </div>
+    );
+  }
 
   return (
-    <div
-      className={`relative flex h-screen w-full flex-col overflow-hidden bg-background-dark ${className}`}
-    >
-      {/* Mobile Container */}
-      <div className="mx-auto flex h-full w-full max-w-[480px] flex-col border-x border-border-dark bg-background-dark shadow-2xl">
-        {/* Header */}
-        <header className="flex flex-col border-b border-border-dark pt-4 bg-background-dark sticky top-0 z-10">
-          <div className="flex items-center justify-between px-6 pb-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white">
-                <Icon name="shopping_basket" />
+    <div className={className}>
+      <div className="flex h-screen w-full flex-col overflow-hidden bg-background-dark">
+        {/* Mobile Container */}
+        <div className="mx-auto flex h-full w-full max-w-[480px] flex-col border-x border-border-dark bg-surface-dark shadow-2xl">
+          {/* Header */}
+          <header className="flex flex-col border-b border-border-dark pt-4 bg-surface-dark sticky top-0 z-10">
+            <div className="flex items-center justify-between px-6 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                  <Icon name="shopping_basket" />
+                </div>
+                <h1 className="text-xl font-bold tracking-tight">
+                  {shoppingList?.name || 'Shopping List'}
+                </h1>
               </div>
-              <h1 className="text-xl font-bold tracking-tight text-white">
-                Weekly Groceries
-              </h1>
+              <div className="flex gap-2">
+                <Button variant="ghost" icon="search" />
+                <Button variant="ghost" icon="more_vert" />
+              </div>
             </div>
-            <div className="flex gap-2">
-              <button className="flex h-10 w-10 items-center justify-center rounded-lg bg-surface-dark hover:bg-slate-700 transition-colors">
-                <Icon name="search" className="text-xl text-slate-200" />
-              </button>
-              <button className="flex h-10 w-10 items-center justify-center rounded-lg bg-surface-dark hover:bg-slate-700 transition-colors">
-                <Icon name="more_vert" className="text-xl text-slate-200" />
-              </button>
+
+            {/* Tabs */}
+            <div className="flex gap-4 px-6">
+              {['My List', 'Shared', 'History'].map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`border-b-2 py-3 text-sm font-bold transition-colors ${
+                    activeTab === tab
+                      ? 'border-primary text-primary'
+                      : 'border-transparent text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  {tab}
+                </button>
+              ))}
             </div>
+          </header>
+
+          {/* Content */}
+          <main className="flex-1 overflow-y-auto pb-32">
+            {sections.map((section, index) => (
+              <ShoppingSection
+                key={index}
+                title={section.title}
+                items={section.items}
+                onToggleItem={handleToggleItem}
+              />
+            ))}
+          </main>
+
+          {/* Floating Action Button */}
+          <div className="absolute bottom-20 left-0 right-0 p-6 bg-gradient-to-t from-background-dark via-background-dark/90 to-transparent pointer-events-none">
+            <Button
+              size="large"
+              className="pointer-events-auto w-full shadow-xl"
+            >
+              <Icon name="add" className="mr-2" />
+              Add Item
+            </Button>
           </div>
 
-          {/* Tabs */}
-          <div className="flex px-6 gap-6">
-            {shoppingListTabs.map((tab) => (
+          {/* Bottom Navigation */}
+          <nav className="flex items-center justify-around border-t border-border-dark bg-surface-dark/80 backdrop-blur-md px-4 py-3 pb-8">
+            {bottomNavItems.map((item, index) => (
               <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`border-b-2 pb-3 text-sm font-bold transition-colors ${
-                  activeTab === tab
-                    ? 'border-primary text-primary'
-                    : 'border-transparent text-slate-400 hover:text-slate-200'
+                key={item.label}
+                className={`flex flex-col items-center gap-1 transition-colors ${
+                  index === 0 ? 'text-primary' : 'text-slate-400 hover:text-primary'
                 }`}
               >
-                {tab}
+                <Icon name={item.icon} />
+                <span className="text-[10px] font-bold uppercase tracking-tighter">
+                  {item.label}
+                </span>
               </button>
             ))}
-          </div>
-        </header>
-
-        {/* Content */}
-        <main className="flex-1 overflow-y-auto pb-32">
-          {sections.map((section) => (
-            <ShoppingSection
-              key={section.id}
-              id={section.id}
-              title={section.title}
-              items={section.items}
-              onToggleItem={(itemId) => toggleItem(section.id, itemId)}
-            />
-          ))}
-        </main>
-
-        {/* Floating Action Button */}
-        <div className="absolute bottom-20 left-0 right-0 p-6 bg-gradient-to-t from-background-dark via-background-dark/90 to-transparent pointer-events-none">
-          <Button
-            icon="add"
-            size="large"
-            className="pointer-events-auto w-full shadow-xl"
-          >
-            Add Item
-          </Button>
+          </nav>
         </div>
-
-        {/* Bottom Navigation */}
-        <nav className="flex items-center justify-around border-t border-border-dark bg-surface-dark/80 backdrop-blur-md px-4 py-3 pb-8">
-          {bottomNavItems.map((item, index) => (
-            <button
-              key={item.label}
-              className={`flex flex-col items-center gap-1 transition-colors ${
-                index === 0 ? 'text-primary' : 'text-slate-400 hover:text-primary'
-              }`}
-            >
-              <Icon name={item.icon} />
-              <span className="text-[10px] font-bold uppercase tracking-tighter">
-                {item.label}
-              </span>
-            </button>
-          ))}
-        </nav>
       </div>
     </div>
   );

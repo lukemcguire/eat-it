@@ -1,35 +1,38 @@
-import React from "react";
-import { useShoppingList } from "@/hooks";
-import { shoppingListTabs, bottomNavItems } from "@/data/mockData";
+import React, { useState, useMemo } from "react";
+import {
+  useShoppingList,
+  useUpdateShoppingListItem,
+  useStoreSections,
+} from "@/hooks";
+import { bottomNavItems } from "@/data/mockData";
 import { Button, Checkbox, Tabs, TabsList, TabsTrigger } from "@/components/shadcn";
 import { cn } from "@/lib/utils";
+import type { ShoppingListItem as ShoppingListItemType } from "@/types/shopping";
 
 interface ShoppingItemRowProps {
-  readonly name: string;
-  readonly checked: boolean;
+  readonly item: ShoppingListItemType;
   readonly onToggle: () => void;
 }
 
 const ShoppingItemRow: React.FC<ShoppingItemRowProps> = ({
-  name,
-  checked,
+  item,
   onToggle,
 }) => {
   return (
     <div className="flex items-center gap-4 px-6 py-4 transition-colors hover:bg-muted/50">
       <div className="flex flex-1 items-center gap-4">
         <Checkbox
-          checked={checked}
+          checked={item.checked}
           onCheckedChange={onToggle}
           className="h-6 w-6"
         />
         <p
           className={cn(
             "text-base font-medium transition-all",
-            checked && "line-through opacity-50"
+            item.checked && "line-through opacity-50"
           )}
         >
-          {name}
+          {item.name}
         </p>
       </div>
       <span className="material-symbols-outlined text-muted-foreground cursor-grab">
@@ -41,8 +44,8 @@ const ShoppingItemRow: React.FC<ShoppingItemRowProps> = ({
 
 interface ShoppingSectionProps {
   readonly title: string;
-  readonly items: readonly { id: string; name: string; checked: boolean }[];
-  readonly onToggleItem: (itemId: string) => void;
+  readonly items: ShoppingListItemType[];
+  readonly onToggleItem: (itemId: number) => void;
 }
 
 const ShoppingSection: React.FC<ShoppingSectionProps> = ({
@@ -52,19 +55,19 @@ const ShoppingSection: React.FC<ShoppingSectionProps> = ({
 }) => {
   return (
     <section className="mt-4">
-      <div className="flex items-center justify-between px-6 py-2 bg-muted/30">
+      <div className="flex items-center justify-between px-6 py-2 bg-muted/50">
         <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
           {title}
         </h3>
         <span className="text-xs font-medium text-muted-foreground">
-          {items.length} item{items.length !== 1 ? "s" : ""}
+          {items.length} item{items.length !== 1 ? 's' : ''}
         </span>
       </div>
       <div className="divide-y divide-border">
         {items.map((item) => (
           <ShoppingItemRow
             key={item.id}
-            {...item}
+            item={item}
             onToggle={() => onToggleItem(item.id)}
           />
         ))}
@@ -75,12 +78,63 @@ const ShoppingSection: React.FC<ShoppingSectionProps> = ({
 
 interface ShoppingListScreenProps {
   readonly className?: string;
+  readonly listId?: number;
 }
 
 export const ShoppingListScreen: React.FC<ShoppingListScreenProps> = ({
-  className = "",
+  className,
+  listId = 1,
 }) => {
-  const { sections, toggleItem, activeTab, setActiveTab } = useShoppingList();
+  const [activeTab, setActiveTab] = useState('My List');
+  const { data: shoppingList, isLoading } = useShoppingList(listId);
+  const { data: sectionsData } = useStoreSections();
+  const updateItem = useUpdateShoppingListItem();
+
+  // Group items by section
+  const sections = useMemo(() => {
+    if (!shoppingList?.items || !sectionsData?.data) {
+      return [];
+    }
+
+    const sectionMap = new Map<number, string>();
+    sectionsData.data.forEach((section) => {
+      sectionMap.set(section.id, section.name);
+    });
+
+    const grouped = new Map<string, ShoppingListItemType[]>();
+    shoppingList.items.forEach((item) => {
+      const sectionName = item.section_id
+        ? sectionMap.get(item.section_id) || 'Other'
+        : 'Other';
+      const items = grouped.get(sectionName) || [];
+      items.push(item);
+      grouped.set(sectionName, items);
+    });
+
+    return Array.from(grouped.entries()).map(([title, items]) => ({
+      title,
+      items,
+    }));
+  }, [shoppingList?.items, sectionsData?.data]);
+
+  const handleToggleItem = (itemId: number) => {
+    const item = shoppingList?.items.find((i) => i.id === itemId);
+    if (item) {
+      updateItem.mutate({
+        listId,
+        itemId,
+        data: { checked: !item.checked },
+      });
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className={cn("flex h-screen items-center justify-center", className)}>
+        <p className="text-muted-foreground">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -98,7 +152,9 @@ export const ShoppingListScreen: React.FC<ShoppingListScreenProps> = ({
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                 <span className="material-symbols-outlined">shopping_basket</span>
               </div>
-              <h1 className="text-xl font-bold tracking-tight">Weekly Groceries</h1>
+              <h1 className="text-xl font-bold tracking-tight">
+                {shoppingList?.name || 'Shopping List'}
+              </h1>
             </div>
             <div className="flex gap-2">
               <Button variant="ghost" size="icon">
@@ -113,7 +169,7 @@ export const ShoppingListScreen: React.FC<ShoppingListScreenProps> = ({
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="px-6">
-              {shoppingListTabs.map((tab) => (
+              {['My List', 'Shared', 'History'].map((tab) => (
                 <TabsTrigger key={tab} value={tab}>
                   {tab}
                 </TabsTrigger>
@@ -124,12 +180,12 @@ export const ShoppingListScreen: React.FC<ShoppingListScreenProps> = ({
 
         {/* Content */}
         <main className="flex-1 overflow-y-auto pb-32">
-          {sections.map((section) => (
+          {sections.map((section, index) => (
             <ShoppingSection
-              key={section.id}
+              key={index}
               title={section.title}
               items={section.items}
-              onToggleItem={(itemId) => toggleItem(section.id, itemId)}
+              onToggleItem={handleToggleItem}
             />
           ))}
         </main>
