@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Completed 05-06 Gap Closure TS6133 Errors
-last_updated: "2026-03-06T07:02:31.209Z"
-last_activity: 2026-03-06 — Completed 05-05 TypeScript Build Fixes
+status: in_progress
+stopped_at: Completed 06-01 Route Foundation and Toast Infrastructure
+last_updated: "2026-03-07T15:55:00.000Z"
+last_activity: 2026-03-07 — Completed 06-01 Route Foundation and Toast Infrastructure
 progress:
-  total_phases: 7
+  total_phases: 8
   completed_phases: 7
-  total_plans: 29
-  completed_plans: 29
-  percent: 100
+  total_plans: 35
+  completed_plans: 30
+  percent: 86
 ---
 
 # Project State
@@ -23,23 +23,23 @@ See: .planning/PROJECT.md (updated 2026-02-23)
 **Core value:** All your recipes and shopping lists live on your own hardware,
 searchable in plain English, with no ads, no accounts required, and no data
 leaving your network.
-**Current focus:** Phase 05.1 (Ingredient Management Frontend) - In Progress
+**Current focus:** Phase 06 (Frontend Integration) - In Progress
 
 ## Current Position
 
-Phase: 05-frontend-and-deployment - Gap Closure
-Plan: 05-05 (TypeScript Build Fixes) - COMPLETE
-Status: Completed 05-05 TypeScript Build Fixes
-Last activity: 2026-03-06 — Completed 05-05 TypeScript Build Fixes
+Phase: 06-frontend-integration - Route Foundation and Toast Infrastructure
+Plan: 06-01 (Route Foundation and Toast Infrastructure) - COMPLETE
+Status: Completed 06-01 Route Foundation and Toast Infrastructure
+Last activity: 2026-03-07 — Completed 06-01 Route Foundation and Toast Infrastructure
 
-Progress: [██████████] 100%
+Progress: [████████░░] 86%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 28
+- Total plans completed: 30
 - Average duration: 13 min
-- Total execution time: 3.6 hours
+- Total execution time: 3.8 hours
 
 **By Phase:**
 
@@ -144,11 +144,14 @@ Recent decisions affecting current work:
 - [Phase 05.1]: useBlocker warns on navigation when hasChanges is true
 - [Phase 05.1]: Use createMemoryRouter instead of BrowserRouter in tests to support useBlocker hook
 - [05-05]: SPA fallback only serves frontend when static/ directory exists (production-only by design)
+- [06-01]: Home route / redirects to /recipes for recipe binder as primary view
+- [06-01]: Recipe detail uses modal overlay with ?recipe={id} query param pattern
 
 ### Roadmap Evolution
 
 - Phase 04.1 inserted after Phase 4: Recipe ingredient management - CRUD endpoints for ingredient groups and ingredients (URGENT)
 - Phase 05.1 inserted after Phase 5: Ingredient Management Frontend (URGENT)
+- Phase 6 added: Frontend Integration - Wire up real screen components in App.tsx, add missing routes, and connect hooks to backend API
 
 ### Pending Todos
 
@@ -167,6 +170,6 @@ From research SUMMARY.md - Phase 3 and Phase 4 flags:
 
 ## Session Continuity
 
-Last session: 2026-03-06T06:58:15.595Z
-Stopped at: Completed 05-06 Gap Closure TS6133 Errors
+Last session: 2026-03-07T15:55:00.000Z
+Stopped at: Completed 06-01 Route Foundation and Toast Infrastructure
 Resume file: None

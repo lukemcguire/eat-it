@@ -174,7 +174,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 04.1 -> 5 -> 05.1 -> 6
 | 04.1. Recipe Ingredient Management | 3/3 | Complete    | 2026-03-04 |
 | 5. Frontend and Deployment | 4/4 | Complete | 2026-03-04 |
 | 05.1. Ingredient Management Frontend | 7/7 | Complete | 2026-03-06 |
-| 6. Frontend Integration | 0/4 | Planned | - |
+| 6. Frontend Integration | 1/4 | In Progress | - |
 
 ### Phase 6: Frontend Integration - Wire up real screen components in App.tsx, add missing routes, and connect hooks to backend API
 
@@ -186,7 +186,7 @@ search functionality.
 **Plans:** 4 plans
 
 Plans:
-- [ ] 06-01-PLAN.md - Routes and toast infrastructure (Wave 1)
+- [x] 06-01-PLAN.md - Routes and toast infrastructure (Wave 1)
 - [ ] 06-02-PLAN.md - API hooks migration - shopping list and search (Wave 1)
 - [ ] 06-03-PLAN.md - Screen integration and modal pattern (Wave 2)
 - [ ] 06-04-PLAN.md - Search screen and final verification (Wave 3)
