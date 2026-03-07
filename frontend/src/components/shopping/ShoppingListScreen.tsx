@@ -1,11 +1,12 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   useShoppingList,
   useUpdateShoppingListItem,
   useStoreSections,
 } from '../../hooks';
-import { bottomNavItems } from '../../data/mockData';
 import { Icon, Button } from '../ui';
+import { toast } from 'sonner';
 import type { ShoppingListItem as ShoppingListItemType } from '@/types/shopping';
 
 interface ShoppingItemRowProps {
@@ -26,13 +27,18 @@ const ShoppingItemRow: React.FC<ShoppingItemRowProps> = ({
           onChange={onToggle}
           className="h-6 w-6 rounded border-slate-300 dark:border-border-dark bg-transparent text-primary focus:ring-primary focus:ring-offset-0"
         />
-        <p
-          className={`text-base font-medium ${
-            item.checked ? 'line-through opacity-50' : ''
-          }`}
-        >
-          {item.name}
-        </p>
+        <div className="flex-1">
+          <p
+            className={`text-base font-medium ${
+              item.checked ? 'line-through opacity-50' : ''
+            }`}
+          >
+            {item.name}
+          </p>
+          {item.quantity && (
+            <p className="text-sm text-slate-500">{item.quantity}</p>
+          )}
+        </div>
       </label>
       <Icon name="drag_indicator" className="text-slate-400 cursor-grab" />
     </div>
@@ -75,28 +81,43 @@ const ShoppingSection: React.FC<ShoppingSectionProps> = ({
 
 interface ShoppingListScreenProps {
   readonly className?: string;
-  readonly listId?: number;
 }
 
 export const ShoppingListScreen: React.FC<ShoppingListScreenProps> = ({
   className = '',
-  listId = 1,
 }) => {
+  const { id } = useParams<{ id: string }>();
+  const listId = parseInt(id || '1', 10);
+
   const [activeTab, setActiveTab] = useState('My List');
-  const { data: shoppingList, isLoading } = useShoppingList(listId);
+  const {
+    data: shoppingList,
+    isLoading,
+    error,
+  } = useShoppingList(listId);
   const { data: sectionsData } = useStoreSections();
   const updateItem = useUpdateShoppingListItem();
 
+  // Handle API errors with toast
+  useEffect(() => {
+    if (error) {
+      toast.error('Failed to load shopping list');
+    }
+  }, [error]);
+
   // Group items by section
   const sections = useMemo(() => {
-    if (!shoppingList?.items || !sectionsData?.data) {
+    if (!shoppingList?.items) {
       return [];
     }
 
+    // Create section map from store sections if available
     const sectionMap = new Map<number, string>();
-    sectionsData.data.forEach((section) => {
-      sectionMap.set(section.id, section.name);
-    });
+    if (sectionsData?.data) {
+      sectionsData.data.forEach((section) => {
+        sectionMap.set(section.id, section.name);
+      });
+    }
 
     const grouped = new Map<string, ShoppingListItemType[]>();
     shoppingList.items.forEach((item) => {
@@ -117,18 +138,38 @@ export const ShoppingListScreen: React.FC<ShoppingListScreenProps> = ({
   const handleToggleItem = (itemId: number) => {
     const item = shoppingList?.items.find((i) => i.id === itemId);
     if (item) {
-      updateItem.mutate({
-        listId,
-        itemId,
-        data: { checked: !item.checked },
-      });
+      updateItem.mutate(
+        {
+          listId,
+          itemId,
+          data: { checked: !item.checked },
+        },
+        {
+          onError: () => toast.error('Failed to update item'),
+        }
+      );
     }
   };
 
   if (isLoading) {
     return (
       <div className={`flex h-screen items-center justify-center ${className}`}>
-        <p className="text-slate-400">Loading...</p>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+      </div>
+    );
+  }
+
+  // Empty state
+  if (!shoppingList) {
+    return (
+      <div className={`flex h-screen items-center justify-center ${className}`}>
+        <div className="text-center">
+          <Icon name="shopping_basket" className="text-slate-600 text-5xl mb-4" />
+          <h3 className="text-lg font-semibold text-slate-300 mb-2">
+            No shopping list found
+          </h3>
+          <p className="text-slate-500">Create a shopping list to get started</p>
+        </div>
       </div>
     );
   }
@@ -146,7 +187,7 @@ export const ShoppingListScreen: React.FC<ShoppingListScreenProps> = ({
                   <Icon name="shopping_basket" />
                 </div>
                 <h1 className="text-xl font-bold tracking-tight">
-                  {shoppingList?.name || 'Shopping List'}
+                  {shoppingList.name || 'Shopping List'}
                 </h1>
               </div>
               <div className="flex gap-2">
@@ -175,14 +216,29 @@ export const ShoppingListScreen: React.FC<ShoppingListScreenProps> = ({
 
           {/* Content */}
           <main className="flex-1 overflow-y-auto pb-32">
-            {sections.map((section, index) => (
-              <ShoppingSection
-                key={index}
-                title={section.title}
-                items={section.items}
-                onToggleItem={handleToggleItem}
-              />
-            ))}
+            {sections.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 text-center px-6">
+                <Icon
+                  name="shopping_cart"
+                  className="text-slate-600 text-5xl mb-4"
+                />
+                <h3 className="text-lg font-semibold text-slate-300 mb-2">
+                  List is empty
+                </h3>
+                <p className="text-slate-500">
+                  Add items to your shopping list
+                </p>
+              </div>
+            ) : (
+              sections.map((section, index) => (
+                <ShoppingSection
+                  key={index}
+                  title={section.title}
+                  items={section.items}
+                  onToggleItem={handleToggleItem}
+                />
+              ))
+            )}
           </main>
 
           {/* Floating Action Button */}
@@ -196,21 +252,44 @@ export const ShoppingListScreen: React.FC<ShoppingListScreenProps> = ({
             </Button>
           </div>
 
-          {/* Bottom Navigation */}
+          {/* Bottom Navigation - removed mock data, using placeholder nav */}
           <nav className="flex items-center justify-around border-t border-border-dark bg-surface-dark/80 backdrop-blur-md px-4 py-3 pb-8">
-            {bottomNavItems.map((item, index) => (
-              <button
-                key={item.label}
-                className={`flex flex-col items-center gap-1 transition-colors ${
-                  index === 0 ? 'text-primary' : 'text-slate-400 hover:text-primary'
-                }`}
-              >
-                <Icon name={item.icon} />
-                <span className="text-[10px] font-bold uppercase tracking-tighter">
-                  {item.label}
-                </span>
-              </button>
-            ))}
+            <a
+              href="/recipes"
+              className="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors"
+            >
+              <Icon name="restaurant_menu" />
+              <span className="text-[10px] font-bold uppercase tracking-tighter">
+                Recipes
+              </span>
+            </a>
+            <a
+              href="/shopping/1"
+              className="flex flex-col items-center gap-1 text-primary"
+            >
+              <Icon name="shopping_basket" />
+              <span className="text-[10px] font-bold uppercase tracking-tighter">
+                Shopping
+              </span>
+            </a>
+            <a
+              href="/search"
+              className="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors"
+            >
+              <Icon name="search" />
+              <span className="text-[10px] font-bold uppercase tracking-tighter">
+                Search
+              </span>
+            </a>
+            <a
+              href="/import"
+              className="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors"
+            >
+              <Icon name="add_circle" />
+              <span className="text-[10px] font-bold uppercase tracking-tighter">
+                Import
+              </span>
+            </a>
           </nav>
         </div>
       </div>
