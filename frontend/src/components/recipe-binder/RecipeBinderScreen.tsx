@@ -1,33 +1,46 @@
-import React from 'react';
-import { useRecipeBinder } from '../../hooks';
-import { type RecipeCard } from '../../data/mockData';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { useRecipes } from '@/hooks/useRecipes';
+import { RecipeDetailModal } from '@/components/RecipeDetailModal';
+import { toast } from 'sonner';
 import { Icon, Button, Input } from '../ui';
+import type { Recipe } from '@/types/recipe';
 
 interface RecipeCardProps {
-  readonly recipe: RecipeCard;
-  readonly onToggleFavorite: () => void;
+  readonly recipe: Recipe;
+  readonly onClick: () => void;
 }
 
-const RecipeCardItem: React.FC<RecipeCardProps> = ({
-  recipe,
-  onToggleFavorite,
-}) => {
-  const difficultyColor = {
-    Easy: 'text-green-400',
-    Medium: 'text-yellow-400',
-    Hard: 'text-red-400',
+const RecipeCardItem: React.FC<RecipeCardProps> = ({ recipe, onClick }) => {
+  // Format time from prep_time and/or cook_time
+  const formatTime = () => {
+    const times = [];
+    if (recipe.prep_time) times.push(recipe.prep_time);
+    if (recipe.cook_time) times.push(recipe.cook_time);
+    return times.length > 0 ? times.join(' + ') : null;
   };
 
+  const displayTime = formatTime();
+
   return (
-    <div className="group relative flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-xl transition-all cursor-pointer">
+    <div
+      onClick={onClick}
+      className="group relative flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:shadow-xl transition-all cursor-pointer"
+    >
       {/* Image */}
       <div className="aspect-[4/3] overflow-hidden">
-        <div
-          className="w-full h-full bg-slate-200 dark:bg-slate-800 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-          style={{ backgroundImage: `url('${recipe.image}')` }}
-          role="img"
-          aria-label={recipe.title}
-        />
+        {recipe.image_url ? (
+          <div
+            className="w-full h-full bg-slate-200 dark:bg-slate-800 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+            style={{ backgroundImage: `url('${recipe.image_url}')` }}
+            role="img"
+            aria-label={recipe.title}
+          />
+        ) : (
+          <div className="w-full h-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center">
+            <Icon name="restaurant_menu" className="text-slate-400 text-4xl" />
+          </div>
+        )}
       </div>
 
       {/* Content */}
@@ -36,30 +49,27 @@ const RecipeCardItem: React.FC<RecipeCardProps> = ({
           <h3 className="font-bold text-lg leading-tight group-hover:text-primary transition-colors text-slate-900 dark:text-slate-100">
             {recipe.title}
           </h3>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggleFavorite();
-            }}
-            className="text-slate-400 hover:text-red-500 transition-colors"
-          >
-            <Icon
-              name="favorite"
-              filled={recipe.isFavorite}
-              className={recipe.isFavorite ? 'text-primary' : ''}
-            />
-          </button>
         </div>
-        <div className="flex items-center gap-3 text-sm text-slate-500">
-          <span className="flex items-center gap-1">
-            <Icon name="schedule" className="text-base" />
-            {recipe.time}
-          </span>
-          <span className={`flex items-center gap-1 ${difficultyColor[recipe.difficulty]}`}>
-            <Icon name="bar_chart" className="text-base" />
-            {recipe.difficulty}
-          </span>
-        </div>
+        {displayTime && (
+          <div className="flex items-center gap-3 text-sm text-slate-500">
+            <span className="flex items-center gap-1">
+              <Icon name="schedule" className="text-base" />
+              {displayTime}
+            </span>
+          </div>
+        )}
+        {recipe.tags && recipe.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1 mt-2">
+            {recipe.tags.slice(0, 3).map((tag) => (
+              <span
+                key={tag}
+                className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -93,15 +103,40 @@ interface RecipeBinderScreenProps {
 export const RecipeBinderScreen: React.FC<RecipeBinderScreenProps> = ({
   className = '',
 }) => {
-  const {
-    filteredRecipes,
-    activeFilter,
-    setActiveFilter,
-    searchQuery,
-    setSearchQuery,
-    toggleFavorite,
-    filters,
-  } = useRecipeBinder();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const recipeId = searchParams.get('recipe');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeFilter, setActiveFilter] = useState('All');
+
+  const filters = ['All', 'Favorites', 'Quick', 'Recent'];
+
+  const { data: recipes, isLoading, error } = useRecipes();
+
+  // Handle API errors with toast
+  useEffect(() => {
+    if (error) {
+      toast.error('Failed to load recipes');
+    }
+  }, [error]);
+
+  // Filter recipes client-side based on search query
+  const filteredRecipes = recipes?.filter((recipe) => {
+    if (!searchQuery) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      recipe.title.toLowerCase().includes(query) ||
+      (recipe.description?.toLowerCase().includes(query) ?? false) ||
+      (recipe.tags?.some((tag) => tag.toLowerCase().includes(query)) ?? false)
+    );
+  });
+
+  const handleRecipeClick = (id: number) => {
+    setSearchParams({ recipe: String(id) });
+  };
+
+  const handleCloseModal = () => {
+    setSearchParams({});
+  };
 
   return (
     <div
@@ -160,24 +195,60 @@ export const RecipeBinderScreen: React.FC<RecipeBinderScreenProps> = ({
           </div>
         </div>
 
+        {/* Loading State */}
+        {isLoading && (
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+          </div>
+        )}
+
+        {/* Empty State */}
+        {!isLoading && (!filteredRecipes || filteredRecipes.length === 0) && (
+          <div className="text-center py-12">
+            <Icon name="restaurant_menu" className="text-slate-600 text-5xl mb-4" />
+            <h3 className="text-lg font-semibold text-slate-300 mb-2">
+              {searchQuery ? 'No recipes found' : 'No recipes yet'}
+            </h3>
+            <p className="text-slate-500 mb-6">
+              {searchQuery
+                ? 'Try a different search term'
+                : 'Import your first recipe to get started'}
+            </p>
+            {!searchQuery && (
+              <Button icon="add" size="large">
+                Add Recipe
+              </Button>
+            )}
+          </div>
+        )}
+
         {/* Recipe Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredRecipes.map((recipe) => (
-            <RecipeCardItem
-              key={recipe.id}
-              recipe={recipe}
-              onToggleFavorite={() => toggleFavorite(recipe.id)}
-            />
-          ))}
-        </div>
+        {!isLoading && filteredRecipes && filteredRecipes.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredRecipes.map((recipe) => (
+              <RecipeCardItem
+                key={recipe.id}
+                recipe={recipe}
+                onClick={() => handleRecipeClick(recipe.id)}
+              />
+            ))}
+          </div>
+        )}
       </main>
 
       {/* Floating Action Button */}
       <div className="fixed bottom-8 right-8 z-50">
-        <Button icon="add" size="large" className="rounded-full px-6 shadow-lg hover:shadow-primary/30 hover:scale-105">
+        <Button
+          icon="add"
+          size="large"
+          className="rounded-full px-6 shadow-lg hover:shadow-primary/30 hover:scale-105"
+        >
           Add Recipe
         </Button>
       </div>
+
+      {/* Recipe Detail Modal */}
+      {recipeId && <RecipeDetailModal onClose={handleCloseModal} />}
     </div>
   );
 };
