@@ -36,13 +36,13 @@ describe('BottomNav', () => {
   });
 
   it('active nav item has active styling', () => {
-    renderWithRouter('/');
+    renderWithRouter('/recipes');
     const recipeBinderLink = screen.getByText('Recipe Binder').closest('a');
     expect(recipeBinderLink?.className).toContain('text-[#207fdf]');
   });
 
   it('inactive nav items have muted styling', () => {
-    renderWithRouter('/');
+    renderWithRouter('/recipes');
     const shoppingLink = screen.getByText('Shopping List').closest('a');
     expect(shoppingLink?.className).toContain('text-[#94a3b8]');
   });
@@ -55,7 +55,7 @@ describe('BottomNav', () => {
 
   it('links navigate to correct paths', () => {
     renderWithRouter();
-    expect(screen.getByText('Recipe Binder').closest('a')).toHaveAttribute('href', '/');
+    expect(screen.getByText('Recipe Binder').closest('a')).toHaveAttribute('href', '/recipes');
     expect(screen.getByText('Shopping List').closest('a')).toHaveAttribute('href', '/shopping');
     expect(screen.getByText('Search').closest('a')).toHaveAttribute('href', '/search');
     expect(screen.getByText('Add/Import').closest('a')).toHaveAttribute('href', '/import');

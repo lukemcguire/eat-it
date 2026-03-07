@@ -53,14 +53,14 @@ describe('Sidebar', () => {
 
   it('links navigate to correct paths', () => {
     renderWithRouter();
-    expect(screen.getByText('Recipe Binder').closest('a')).toHaveAttribute('href', '/');
+    expect(screen.getByText('Recipe Binder').closest('a')).toHaveAttribute('href', '/recipes');
     expect(screen.getByText('Shopping List').closest('a')).toHaveAttribute('href', '/shopping');
     expect(screen.getByText('Search').closest('a')).toHaveAttribute('href', '/search');
     expect(screen.getByText('Add/Import').closest('a')).toHaveAttribute('href', '/import');
   });
 
   it('active nav item has active styling', () => {
-    renderWithRouter('/');
+    renderWithRouter('/recipes');
     const recipeBinderLink = screen.getByText('Recipe Binder').closest('a');
     expect(recipeBinderLink?.className).toContain('bg-[#207fdf]/20');
   });
