@@ -3,6 +3,7 @@
 Environment variables:
     EAT_IT_DATABASE_URL: SQLite database URL (default: sqlite:///./data/eat-it.db)
     EAT_IT_EMBEDDING_MODEL: Sentence transformer model name (default: all-MiniLM-L6-v2)
+    EAT_IT_STATIC_DIR: Path to static files directory (default: /app/static for Docker)
 """
 
 from functools import lru_cache
@@ -24,6 +25,7 @@ class Settings(BaseSettings):
     embedding_model: str = "all-MiniLM-L6-v2"
     port: int = 8000
     environment: str = "production"
+    static_dir: str = "/app/static"  # Docker default; override for local dev
 
 
 @lru_cache

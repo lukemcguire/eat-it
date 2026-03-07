@@ -4,7 +4,7 @@ services:
   eat-it:
     build:
       context: .
-      dockerfile: docker/Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "${EAT_IT_PORT:-8000}:8000"
     volumes:

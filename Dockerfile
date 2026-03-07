@@ -17,11 +17,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Install Python dependencies
 COPY pyproject.toml ./
+COPY README.md ./
+COPY src/ ./src/
 RUN pip install --no-cache-dir hatchling && \
     pip install --no-cache-dir .
-
-# Copy backend code
-COPY src/ ./src/
 
 # Copy built frontend from stage 1
 COPY --from=frontend-builder /app/dist ./static

@@ -82,7 +82,8 @@ app.include_router(search_router, tags=["search"])
 app.include_router(shopping_lists_router, prefix="/shopping-lists")
 
 # Serve static files in production (built frontend)
-static_dir = Path(__file__).parent.parent.parent / "static"
+settings = get_settings()
+static_dir = Path(settings.static_dir)
 STATIC_DIR_EXISTS = static_dir.exists()
 
 # API prefixes that should not be caught by SPA fallback
