@@ -3,6 +3,7 @@ import React from 'react';
 interface InputProps {
   readonly value: string;
   readonly onChange: (value: string) => void;
+  readonly onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   readonly placeholder?: string;
   readonly icon?: string;
   readonly type?: 'text' | 'url';
@@ -13,6 +14,7 @@ interface InputProps {
 export const Input: React.FC<InputProps> = ({
   value,
   onChange,
+  onKeyDown,
   placeholder,
   icon,
   type = 'text',
@@ -30,6 +32,7 @@ export const Input: React.FC<InputProps> = ({
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        onKeyDown={onKeyDown}
         placeholder={placeholder}
         disabled={disabled}
         className={`w-full ${icon ? 'pl-12' : 'pl-4'} pr-4 py-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-charcoal-900/60 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed`}
