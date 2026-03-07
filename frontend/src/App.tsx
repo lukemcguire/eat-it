@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
 import { AppLayout } from '@/components/layout/AppLayout';
@@ -33,8 +33,9 @@ export function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<AppLayout />}>
-            <Route path="/" element={<RecipeBinder />} />
-            <Route path="/shopping" element={<ShoppingList />} />
+            <Route path="/" element={<Navigate to="/recipes" replace />} />
+            <Route path="/recipes" element={<RecipeBinder />} />
+            <Route path="/shopping/:id?" element={<ShoppingList />} />
             <Route path="/search" element={<Search />} />
             <Route path="/import" element={<RecipeImport />} />
           </Route>

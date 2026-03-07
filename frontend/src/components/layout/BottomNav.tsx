@@ -2,7 +2,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { BookOpen, ShoppingCart, Search, PlusCircle } from 'lucide-react';
 
 const navItems = [
-  { path: '/', label: 'Recipe Binder', icon: BookOpen },
+  { path: '/recipes', label: 'Recipe Binder', icon: BookOpen },
   { path: '/shopping', label: 'Shopping List', icon: ShoppingCart },
   { path: '/search', label: 'Search', icon: Search },
   { path: '/import', label: 'Add/Import', icon: PlusCircle },
@@ -15,7 +15,7 @@ export function BottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#0f172a] border-t border-[#2e4e6b] lg:hidden">
       <div className="flex items-center justify-around h-16 max-w-lg mx-auto">
         {navItems.map(({ path, label, icon: Icon }) => {
-          const isActive = location.pathname === path;
+          const isActive = location.pathname.startsWith(path);
           return (
             <NavLink
               key={path}
