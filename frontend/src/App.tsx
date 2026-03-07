@@ -2,20 +2,10 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
 import { AppLayout } from '@/components/layout/AppLayout';
-
-// Placeholder screen components
-const RecipeBinder = () => (
-  <div className="text-white">Recipe Binder</div>
-);
-const ShoppingList = () => (
-  <div className="text-white">Shopping List</div>
-);
-const Search = () => (
-  <div className="text-white">Search</div>
-);
-const RecipeImport = () => (
-  <div className="text-white">Recipe Import</div>
-);
+import { RecipeBinderScreen } from '@/components/recipe-binder/RecipeBinderScreen';
+import { ShoppingListScreen } from '@/components/shopping/ShoppingListScreen';
+import { SearchScreen } from '@/components/screens/SearchScreen';
+import { RecipeImportScreen } from '@/components/recipe-import/RecipeImportScreen';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,10 +24,10 @@ export function App() {
         <Routes>
           <Route element={<AppLayout />}>
             <Route path="/" element={<Navigate to="/recipes" replace />} />
-            <Route path="/recipes" element={<RecipeBinder />} />
-            <Route path="/shopping/:id?" element={<ShoppingList />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/import" element={<RecipeImport />} />
+            <Route path="/recipes" element={<RecipeBinderScreen />} />
+            <Route path="/shopping/:id?" element={<ShoppingListScreen />} />
+            <Route path="/search" element={<SearchScreen />} />
+            <Route path="/import" element={<RecipeImportScreen />} />
           </Route>
         </Routes>
       </BrowserRouter>
