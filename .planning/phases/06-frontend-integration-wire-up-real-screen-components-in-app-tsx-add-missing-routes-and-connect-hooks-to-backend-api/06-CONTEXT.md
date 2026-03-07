@@ -1,15 +1,14 @@
 # Phase 6: Frontend Integration - Context
 
-**Gathered:** 2026-03-06
-**Status:** Ready for planning
+**Gathered:** 2026-03-06 **Status:** Ready for planning
 
 <domain>
 ## Phase Boundary
 
 Wire up real screen components in App.tsx, add missing routes, and connect hooks
 to backend API. Replace placeholder screens with Stitch-generated components,
-migrate from mock data to real API calls, and implement complete navigation
-flow with modal-based recipe detail.
+migrate from mock data to real API calls, and implement complete navigation flow
+with modal-based recipe detail.
 
 </domain>
 
@@ -64,10 +63,11 @@ flow with modal-based recipe detail.
 
 ### Component Integration
 
-- **Copy Stitch-generated screens** from `.planning/UI/src/components/`
-  into `frontend/src/components/`
-- **Use existing designs** with minor color tweaks for Synchronized Blue theme
-  consistency
+- **Copy Stitch-generated screens** from `.planning/UI/src/components/` into
+  `frontend/src/components/`
+- **Use existing designs** with colors, typography, etc. to be replaced where
+  necessary to be consistent with the Synchronized Blue theme as outlined in
+  `.planning/UI/DESIGN.md`
 - **Screens to integrate:** RecipeBinderScreen, RecipeDetailScreen,
   RecipeImportScreen, ShoppingListScreen
 
@@ -93,6 +93,7 @@ flow with modal-based recipe detail.
 </specifics>
 
 <code_context>
+
 ## Existing Code Insights
 
 ### Reusable Assets (Stitch-generated in .planning/UI/src/components/)
@@ -104,8 +105,8 @@ flow with modal-based recipe detail.
 
 ### Existing Hooks (frontend/src/hooks/)
 
-- `useRecipes.ts`: Connected to real API (list, get, create, update,
-  delete, parse)
+- `useRecipes.ts`: Connected to real API (list, get, create, update, delete,
+  parse)
 - `useRecipeImport.ts`: Mock data (needs API connection)
 - `useShoppingList.ts`: Mock data (needs API connection)
 - `useRecipeBinder.ts`: Mock data (needs API connection)
@@ -142,5 +143,4 @@ flow with modal-based recipe detail.
 
 ---
 
-*Phase: 06-frontend-integration*
-*Context gathered: 2026-03-06*
+_Phase: 06-frontend-integration_ _Context gathered: 2026-03-06_
