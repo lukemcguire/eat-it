@@ -2,7 +2,7 @@
 phase: 06
 slug: frontend-integration-wire-up-real-screen-components-in-app-tsx-add-missing-routes-and-connect-hooks-to-backend-api
 status: draft
-nyquist_compliant: false
+nyquist_compliant: true
 wave_0_complete: false
 created: 2026-03-07
 ---
@@ -39,12 +39,17 @@ created: 2026-03-07
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
 | 06-01-01 | 01 | 1 | Route-01 | unit | `npm test -- App.test.tsx` | ✅ | ⬜ pending |
-| 06-01-02 | 01 | 1 | Route-02 | unit | `npm test -- RecipeBinder.test.tsx` | ❌ W0 | ⬜ pending |
-| 06-02-01 | 02 | 1 | Hook-01 | unit | `npm test -- useShoppingList.test.tsx` | ❌ W0 | ⬜ pending |
-| 06-02-02 | 02 | 1 | Hook-02 | unit | `npm test -- useSearch.test.tsx` | ❌ W0 | ⬜ pending |
-| 06-02-03 | 02 | 1 | Hook-03 | unit | `npm test -- useRecipeImport.test.tsx` | ❌ W0 | ⬜ pending |
-| 06-03-01 | 03 | 2 | Toast-01 | unit | `npm test -- Toast.test.tsx` | ❌ W0 | ⬜ pending |
-| 06-04-01 | 04 | 2 | WS-01 | unit | `npm test -- useShoppingListWS.test.tsx` | ❌ W0 | ⬜ pending |
+| 06-01-02 | 01 | 1 | Route-02 | unit | `npm test -- App.test.tsx` | ✅ | ⬜ pending |
+| 06-01-03 | 01 | 1 | Modal-01 | unit | `npm test -- RecipeDetailModal.test.tsx` | ❌ W0 | ⬜ pending |
+| 06-02-01 | 02 | 1 | Type-01 | compile | `npx tsc --noEmit` | ✅ | ⬜ pending |
+| 06-02-02 | 02 | 1 | Hook-01 | unit | `npm test -- useShoppingList.test.tsx` | ❌ W0 | ⬜ pending |
+| 06-02-03 | 02 | 1 | Hook-02 | unit | `npm test -- useSearch.test.tsx` | ❌ W0 | ⬜ pending |
+| 06-03-01 | 03 | 2 | Screen-01 | unit | `npm test -- --run` | ✅ | ⬜ pending |
+| 06-03-02 | 03 | 2 | Hook-03 | compile | `npx tsc --noEmit` | ✅ | ⬜ pending |
+| 06-03-03 | 03 | 2 | Screen-02 | unit | `npm test -- --run` | ✅ | ⬜ pending |
+| 06-03-04 | 03 | 2 | Screen-03 | unit | `npm test -- --run` | ✅ | ⬜ pending |
+| 06-04-01 | 04 | 3 | Search-01 | compile | `npx tsc --noEmit` | ✅ | ⬜ pending |
+| 06-04-02 | 04 | 3 | Route-03 | unit | `npm test -- --run` | ✅ | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -54,9 +59,7 @@ created: 2026-03-07
 
 - [ ] `frontend/src/__tests__/hooks/useShoppingList.test.tsx` — stubs for Hook-01
 - [ ] `frontend/src/__tests__/hooks/useSearch.test.tsx` — stubs for Hook-02
-- [ ] `frontend/src/__tests__/hooks/useRecipeImport.test.tsx` — stubs for Hook-03
-- [ ] `frontend/src/__tests__/components/screens/RecipeBinder.test.tsx` — stubs for Route-02
-- [ ] `frontend/src/__tests__/components/Toast.test.tsx` — stubs for Toast-01
+- [ ] `frontend/src/__tests__/components/RecipeDetailModal.test.tsx` — stubs for Modal-01
 - [ ] `npm install sonner` — missing dependency
 
 ---
@@ -66,18 +69,17 @@ created: 2026-03-07
 | Behavior | Requirement | Why Manual | Test Instructions |
 |----------|-------------|------------|-------------------|
 | Modal URL shareability | Route-02 | Browser URL bar state | Copy URL with ?recipe=X, paste in new tab, verify modal opens |
-| WebSocket reconnection | WS-01 | Network state simulation | Disable network, re-enable, verify list updates |
 | Hardware back button closes modal | Route-02 | Mobile-specific | On mobile device, open modal, press back, verify modal closes |
 
 ---
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 15s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references
+- [x] No watch-mode flags
+- [x] Feedback latency < 15s
+- [x] `nyquist_compliant: true` set in frontmatter
 
 **Approval:** pending
