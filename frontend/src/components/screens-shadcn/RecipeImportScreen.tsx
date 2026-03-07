@@ -24,20 +24,6 @@ const ImportStep: React.FC<ImportStepProps> = ({ number, description }) => {
   );
 };
 
-interface IngredientRowProps {
-  readonly name: string;
-  readonly quantity: string;
-}
-
-const IngredientRow: React.FC<IngredientRowProps> = ({ name, quantity }) => {
-  return (
-    <li className="flex justify-between text-sm">
-      <span className="text-muted-foreground">{name}</span>
-      <span className="font-medium">{quantity}</span>
-    </li>
-  );
-};
-
 interface RecipeImportScreenProps {
   readonly className?: string;
 }
@@ -48,11 +34,14 @@ export const RecipeImportScreen: React.FC<RecipeImportScreenProps> = ({
   const {
     url,
     setUrl,
-    recipe,
-    isLoaded,
-    fetchRecipe,
+    parsedRecipe: recipe,
+    parseError,
+    isParsing,
+    isSaving,
+    parseRecipe,
     saveRecipe,
     discardRecipe,
+    duplicateWarning,
   } = useRecipeImport();
 
   return (
@@ -105,15 +94,31 @@ export const RecipeImportScreen: React.FC<RecipeImportScreenProps> = ({
                   className="pl-12"
                 />
               </div>
-              <Button size="lg" onClick={fetchRecipe}>
+              <Button size="lg" onClick={parseRecipe} disabled={isParsing}>
                 <span className="material-symbols-outlined">bolt</span>
-                Fetch Recipe
+                {isParsing ? 'Fetching...' : 'Fetch Recipe'}
               </Button>
             </div>
           </Card>
 
+          {/* Error Message */}
+          {parseError && (
+            <Card className="p-6 border-destructive bg-destructive/10">
+              <p className="text-destructive font-medium">{parseError}</p>
+            </Card>
+          )}
+
+          {/* Duplicate Warning */}
+          {duplicateWarning && (
+            <Card className="p-6 border-warning bg-warning/10">
+              <p className="text-warning font-medium">
+                This recipe may be a duplicate of &quot;{duplicateWarning.existing_recipe.title}&quot;
+              </p>
+            </Card>
+          )}
+
           {/* Preview Section */}
-          {isLoaded && recipe && (
+          {recipe && (
             <section className="flex flex-col gap-6">
               <div className="flex items-center justify-between px-2">
                 <h2 className="text-2xl font-bold">Preview Details</h2>
@@ -124,49 +129,59 @@ export const RecipeImportScreen: React.FC<RecipeImportScreenProps> = ({
                 {/* Main Content */}
                 <div className="lg:col-span-8 flex flex-col gap-6">
                   {/* Hero Preview */}
-                  <div className="relative h-64 w-full rounded-2xl overflow-hidden group">
-                    <img
-                      src={recipe.heroImage}
-                      alt={recipe.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
-                    <div className="absolute bottom-6 left-6 right-6">
-                      <h3 className="text-white text-2xl font-bold">
-                        {recipe.title}
-                      </h3>
-                      <p className="text-white/80 text-sm mt-1">
-                        Found on &quot;{recipe.source}&quot;
-                      </p>
+                  {recipe.image_url && (
+                    <div className="relative h-64 w-full rounded-2xl overflow-hidden group">
+                      <img
+                        src={recipe.image_url}
+                        alt={recipe.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+                      <div className="absolute bottom-6 left-6 right-6">
+                        <h3 className="text-white text-2xl font-bold">
+                          {recipe.title}
+                        </h3>
+                        {recipe.source_url && (
+                          <p className="text-white/80 text-sm mt-1">
+                            Found on &quot;{new URL(recipe.source_url).hostname}&quot;
+                          </p>
+                        )}
+                      </div>
                     </div>
-                    <button className="absolute top-4 right-4 bg-white/20 backdrop-blur-md hover:bg-white/30 text-white p-2 rounded-lg transition-colors">
-                      <span className="material-symbols-outlined">edit</span>
-                    </button>
-                  </div>
+                  )}
+
+                  {/* Title (shown if no image) */}
+                  {!recipe.image_url && (
+                    <Card className="p-6">
+                      <h3 className="text-2xl font-bold">{recipe.title}</h3>
+                      {recipe.description && (
+                        <p className="text-muted-foreground mt-2">{recipe.description}</p>
+                      )}
+                    </Card>
+                  )}
 
                   {/* Instructions */}
-                  <Card className="p-8">
-                    <div className="flex items-center justify-between mb-6">
-                      <h4 className="text-lg font-bold flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary">
-                          format_list_numbered
-                        </span>
-                        Instructions
-                      </h4>
-                      <button className="text-primary text-sm font-semibold hover:underline">
-                        Edit Steps
-                      </button>
-                    </div>
-                    <div className="space-y-4">
-                      {recipe.steps.map((step) => (
-                        <ImportStep
-                          key={step.number}
-                          number={step.number}
-                          description={step.description}
-                        />
-                      ))}
-                    </div>
-                  </Card>
+                  {recipe.instructions && (
+                    <Card className="p-8">
+                      <div className="flex items-center justify-between mb-6">
+                        <h4 className="text-lg font-bold flex items-center gap-2">
+                          <span className="material-symbols-outlined text-primary">
+                            format_list_numbered
+                          </span>
+                          Instructions
+                        </h4>
+                      </div>
+                      <div className="prose prose-sm max-w-none">
+                        {recipe.instructions.split(/\n\n?/).map((step, idx) => (
+                          <ImportStep
+                            key={idx}
+                            number={idx + 1}
+                            description={step}
+                          />
+                        ))}
+                      </div>
+                    </Card>
+                  )}
                 </div>
 
                 {/* Sidebar */}
@@ -174,57 +189,72 @@ export const RecipeImportScreen: React.FC<RecipeImportScreenProps> = ({
                   {/* Quick Info */}
                   <Card className="p-8">
                     <div className="flex flex-col space-y-6">
-                      <div className="flex flex-col">
-                        <span className="text-muted-foreground text-xs uppercase font-bold tracking-wider">
-                          Time
-                        </span>
-                        <span className="font-bold">{recipe.time}</span>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-muted-foreground text-xs uppercase font-bold tracking-wider">
-                          Servings
-                        </span>
-                        <span className="font-bold">{recipe.servings}</span>
-                      </div>
+                      {(recipe.prep_time || recipe.cook_time) && (
+                        <div className="flex flex-col">
+                          <span className="text-muted-foreground text-xs uppercase font-bold tracking-wider">
+                            Time
+                          </span>
+                          <span className="font-bold">
+                            {[recipe.prep_time, recipe.cook_time].filter(Boolean).join(' / ')}
+                          </span>
+                        </div>
+                      )}
+                      {recipe.servings && (
+                        <div className="flex flex-col">
+                          <span className="text-muted-foreground text-xs uppercase font-bold tracking-wider">
+                            Servings
+                          </span>
+                          <span className="font-bold">{recipe.servings}</span>
+                        </div>
+                      )}
                     </div>
                   </Card>
 
                   {/* Ingredients */}
-                  <Card className="p-8">
-                    <div className="flex items-center justify-between border-b border-border pb-3 mb-6">
-                      <h4 className="font-bold flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-xl">
-                          shopping_basket
+                  {recipe.ingredients && recipe.ingredients.length > 0 && (
+                    <Card className="p-8">
+                      <div className="flex items-center justify-between border-b border-border pb-3 mb-6">
+                        <h4 className="font-bold flex items-center gap-2">
+                          <span className="material-symbols-outlined text-primary text-xl">
+                            shopping_basket
+                          </span>
+                          Ingredients
+                        </h4>
+                        <span className="text-xs text-muted-foreground">
+                          {recipe.ingredients.length} items
                         </span>
-                        Ingredients
-                      </h4>
-                      <span className="text-xs text-muted-foreground">
-                        {recipe.ingredients.length} items
-                      </span>
-                    </div>
-                    <ul className="space-y-3">
-                      {recipe.ingredients.map((ing, idx) => (
-                        <IngredientRow
-                          key={idx}
-                          name={ing.name}
-                          quantity={ing.quantity}
-                        />
-                      ))}
-                    </ul>
-                    <button className="mt-4 w-full py-2 border border-dashed border-border rounded-lg text-muted-foreground text-sm hover:border-primary hover:text-primary transition-colors">
-                      + Add Ingredient
-                    </button>
-                  </Card>
+                      </div>
+                      <ul className="space-y-3">
+                        {recipe.ingredients.map((ing, idx) => (
+                          <li key={idx} className="text-sm text-muted-foreground">
+                            {ing}
+                          </li>
+                        ))}
+                      </ul>
+                    </Card>
+                  )}
+
+                  {/* Tags */}
+                  {recipe.tags && recipe.tags.length > 0 && (
+                    <Card className="p-6">
+                      <h4 className="font-bold mb-3">Tags</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {recipe.tags.map((tag, idx) => (
+                          <Badge key={idx} variant="secondary">{tag}</Badge>
+                        ))}
+                      </div>
+                    </Card>
+                  )}
                 </div>
               </div>
 
               {/* Final Actions */}
               <div className="flex items-center justify-end gap-4 pt-6 border-t border-border">
-                <Button variant="secondary" onClick={discardRecipe}>
+                <Button variant="secondary" onClick={discardRecipe} disabled={isSaving}>
                   Discard
                 </Button>
-                <Button size="lg" onClick={saveRecipe}>
-                  Confirm &amp; Save Recipe
+                <Button size="lg" onClick={saveRecipe} disabled={isSaving}>
+                  {isSaving ? 'Saving...' : 'Confirm & Save Recipe'}
                 </Button>
               </div>
             </section>
