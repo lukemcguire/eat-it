@@ -36,4 +36,16 @@ describe('App', () => {
     const main = document.querySelector('main');
     expect(main?.textContent).toContain('Recipe Binder');
   });
+
+  it('toast module is importable for error handling', async () => {
+    const { toast } = await import('sonner');
+    // Verify toast.error is a function (can be called for API error handling)
+    expect(typeof toast.error).toBe('function');
+  });
+
+  it('verifies sonner is installed in package.json', async () => {
+    // Read package.json to verify sonner is a dependency
+    const pkg = await import('../../package.json', { assert: { type: 'json' } });
+    expect(pkg.dependencies).toHaveProperty('sonner');
+  });
 });
