@@ -7,6 +7,7 @@ interface InputProps {
   readonly icon?: string;
   readonly type?: 'text' | 'url';
   readonly className?: string;
+  readonly disabled?: boolean;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -16,6 +17,7 @@ export const Input: React.FC<InputProps> = ({
   icon,
   type = 'text',
   className = '',
+  disabled = false,
 }) => {
   return (
     <div className={`relative ${className}`}>
@@ -29,7 +31,8 @@ export const Input: React.FC<InputProps> = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className={`w-full ${icon ? 'pl-12' : 'pl-4'} pr-4 py-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-charcoal-900/60 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none`}
+        disabled={disabled}
+        className={`w-full ${icon ? 'pl-12' : 'pl-4'} pr-4 py-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-charcoal-900/60 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed`}
       />
     </div>
   );
